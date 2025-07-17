@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestão de Clientes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Gestão de Clientes</h1>
+  <div id="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th><th>Telefone</th><th>Pessoas</th><th>Datas</th>
+          <th>Flexível</th><th>Aeroporto</th><th>Regime</th>
+          <th>Valor (€)</th><th>Retorno</th><th>Observações</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-dados"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const URL = 'URL_DO_SEU_WEBAPP'; // Substituir
+
+    fetch(URL)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById("tabela-dados");
+        data.forEach(item => {
+          const linha = document.createElement("tr");
+          item.forEach(valor => {
+            const celula = document.createElement("td");
+            celula.textContent = valor;
+            linha.appendChild(celula);
+          });
+          tbody.appendChild(linha);
+        });
+      });
+  </script>
+</body>
+</html>

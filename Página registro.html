@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Cliente - Call Center</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Registro de Cliente</h1>
+  <form id="clientForm">
+    <input type="text" name="nome" placeholder="Nome do Cliente" required />
+    <input type="text" name="telefone" placeholder="Telefone" required />
+    <input type="number" name="numPessoas" placeholder="Nº de pessoas a viajar" required />
+    
+    <label>Data de Início</label>
+    <input type="date" name="dataInicio" required />
+    <label>Data de Fim</label>
+    <input type="date" name="dataFim" required />
+    
+    <label><input type="checkbox" name="flexivel" /> Datas são flexíveis?</label>
+    
+    <input type="text" name="aeroporto" placeholder="Aeroporto de preferência" required />
+    
+    <select name="regime" required>
+      <option value="">Escolha o regime</option>
+      <option value="Pequeno-almoço">Pequeno-almoço</option>
+      <option value="Meia pensão">Meia pensão</option>
+      <option value="Tudo incluído">Tudo incluído</option>
+    </select>
+    
+    <input type="number" name="valor" placeholder="Valor estimado (€)" required />
+    <label>Data para retorno de chamada</label>
+    <input type="date" name="retorno" required />
+    
+    <textarea name="observacoes" placeholder="Observações sobre o cliente"></textarea>
+    
+    <button type="submit">Enviar</button>
+    <p id="mensagem"></p>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
