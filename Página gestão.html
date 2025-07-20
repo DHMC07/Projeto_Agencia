@@ -2,41 +2,39 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Gestão de Clientes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestão de Registros</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Gestão de Clientes</h1>
-  <div id="tabela-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th><th>Telefone</th><th>Pessoas</th><th>Datas</th>
-          <th>Flexível</th><th>Aeroporto</th><th>Regime</th>
-          <th>Valor (€)</th><th>Retorno</th><th>Observações</th>
-        </tr>
-      </thead>
-      <tbody id="tabela-dados"></tbody>
-    </table>
+  <div id="senhaContainer">
+    <h2>Área Restrita</h2>
+    <p>Digite a senha para continuar:</p>
+    <input type="password" id="senhaInput" />
+    <button onclick="verificarSenha()">Entrar</button>
+    <p id="erroSenha"></p>
   </div>
 
-  <script>
-    const URL = 'URL_DO_SEU_WEBAPP'; // Substituir
+  <div id="gestaoContainer" style="display: none;">
+    <h1>Registros de Clientes</h1>
+    <table id="tabelaRegistros">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Pessoas</th>
+          <th>Datas</th>
+          <th>Flexível</th>
+          <th>Aeroporto</th>
+          <th>Regime</th>
+          <th>Valor (€)</th>
+          <th>Observações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="exportarCSV()">Exportar CSV</button>
+  </div>
 
-    fetch(URL)
-      .then(res => res.json())
-      .then(data => {
-        const tbody = document.getElementById("tabela-dados");
-        data.forEach(item => {
-          const linha = document.createElement("tr");
-          item.forEach(valor => {
-            const celula = document.createElement("td");
-            celula.textContent = valor;
-            linha.appendChild(celula);
-          });
-          tbody.appendChild(linha);
-        });
-      });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
