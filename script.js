@@ -150,3 +150,38 @@ function exportarCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
+let tempoInatividade = 0;
+const LIMITE_MINUTOS = 5;
+const LIMITE_SEGUNDOS = LIMITE_MINUTOS * 60;
+const AVISO_ANTES = 30; // segundos antes do logout para exibir aviso
+
+let avisoTimeoutMostrado = false;
+
+function resetarTimerInatividade() {
+  tempoInatividade = 0;
+  avisoTimeoutMostrado = false;
+  esconderAvisoLogout();
+}
+
+function iniciarMonitoramentoInatividade() {
+  document.addEventListener("mousemove", resetarTimerInatividade);
+  document.addEventListener("keydown", resetarTimerInatividade);
+
+  setInterval(() => {
+    tempoInatividade++;
+
+    if ((LIMITE_SEGUNDOS - tempoInatividade) <= AVISO_ANTES && !avisoTimeoutMostrado) {
+      mostrarAvisoLogout(LIMITE_SEGUNDOS - tempoInatividade);
+      avisoTimeoutMostrado = true;
+    }
+
+    if (tempoInatividade >= LIMITE_SEGUNDOS) {
+      sessionStorage.clear();
+      alert("Sessão expirada por inatividade.");
+      window.location.reload();
+    }
+
+    atualizarContadorSessao(LIMITE_SEGUNDOS - tempoInatividade);
+  }, 1000);
+}
