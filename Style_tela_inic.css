@@ -1,0 +1,80 @@
+:root {
+  --verde-principal: #737a5e;
+  --verde-secundario: #959c7f;
+  --verde-escuro: #65704f;
+  --fundo: #f4f5f0;
+  --branco: #ffffff;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--fundo);
+  color: var(--verde-escuro);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+  background-color: var(--branco);
+  padding: 50px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(115, 122, 94, 0.1);
+}
+
+h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.opcoes {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.botao {
+  padding: 15px 25px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.callcenter {
+  background-color: var(--verde-secundario);
+}
+
+.callcenter:hover {
+  background-color: var(--verde-escuro);
+}
+
+.gestao {
+  background-color: var(--verde-principal);
+}
+
+.gestao:hover {
+  background-color: var(--verde-escuro);
+}
+
+@media screen and (max-width: 500px) {
+  .opcoes {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .botao {
+    width: 100%;
+  }
+}
