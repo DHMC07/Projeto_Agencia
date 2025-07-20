@@ -1,5 +1,66 @@
-// ========= REGISTRO (registro.html) =========
+// SENHAS
+const senhaRegistro = "callcenter123";
+const senhaGestao = "admin123";
 
+// ========== LOGIN AUTOMÁTICO AO CARREGAR ==========
+document.addEventListener("DOMContentLoaded", () => {
+  const isRegistroPage = window.location.pathname.includes("registro.html");
+  const isGestaoPage = window.location.pathname.includes("gestao.html");
+
+  if (isRegistroPage && sessionStorage.getItem("logadoRegistro") === "true") {
+    mostrarRegistro();
+  }
+
+  if (isGestaoPage && sessionStorage.getItem("logadoGestao") === "true") {
+    mostrarGestao();
+    carregarRegistros();
+    iniciarAtualizacaoAutomatica();
+  }
+});
+
+// ========== FUNÇÕES DE LOGIN ==========
+function verificarLoginRegistro() {
+  const input = document.getElementById("senhaRegistro").value;
+  const erro = document.getElementById("erroLoginRegistro");
+  if (input === senhaRegistro) {
+    sessionStorage.setItem("logadoRegistro", "true");
+    mostrarRegistro();
+  } else {
+    erro.textContent = "Senha incorreta.";
+  }
+}
+
+function verificarLoginGestao() {
+  const input = document.getElementById("senhaGestao").value;
+  const erro = document.getElementById("erroLoginGestao");
+  if (input === senhaGestao) {
+    sessionStorage.setItem("logadoGestao", "true");
+    mostrarGestao();
+    carregarRegistros();
+    iniciarAtualizacaoAutomatica();
+  } else {
+    erro.textContent = "Senha incorreta.";
+  }
+}
+
+// ========== FUNÇÕES VISUAIS ==========
+function mostrarRegistro() {
+  document.getElementById("loginContainer").style.display = "none";
+  document.getElementById("registroContainer").style.display = "block";
+}
+
+function mostrarGestao() {
+  document.getElementById("loginGestao").style.display = "none";
+  document.getElementById("gestaoContainer").style.display = "block";
+}
+
+// ========== LOGOUT ==========
+function logout() {
+  sessionStorage.clear();
+  window.location.reload();
+}
+
+// ========== REGISTRO DE FORMULÁRIO ==========
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("registroForm");
   if (form) {
@@ -30,24 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// ========= GESTÃO (gestao.html) =========
-
-function verificarSenha() {
-  const senhaCorreta = "admin123";
-  const input = document.getElementById("senhaInput").value;
-  const erro = document.getElementById("erroSenha");
-
-  if (input === senhaCorreta) {
-    document.getElementById("senhaContainer").style.display = "none";
-    document.getElementById("gestaoContainer").style.display = "block";
-    carregarRegistros();
-  } else {
-    erro.textContent = "Senha incorreta. Tente novamente.";
-  }
-}
-
+// ========== EXIBIR REGISTROS ==========
 function carregarRegistros() {
   const tabelaBody = document.querySelector("#tabelaRegistros tbody");
+  if (!tabelaBody) return;
+
   tabelaBody.innerHTML = "";
 
   const registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
@@ -70,8 +118,8 @@ function carregarRegistros() {
   });
 }
 
-// Atualização automática a cada 5 segundos (simula tempo real)
-if (window.location.pathname.includes("gestao.html")) {
+// ========== ATUALIZAÇÃO AUTOMÁTICA ==========
+function iniciarAtualizacaoAutomatica() {
   setInterval(() => {
     if (document.getElementById("gestaoContainer").style.display === "block") {
       carregarRegistros();
@@ -79,8 +127,7 @@ if (window.location.pathname.includes("gestao.html")) {
   }, 5000);
 }
 
-// ========= EXPORTAÇÃO CSV =========
-
+// ========== EXPORTAÇÃO ==========
 function exportarCSV() {
   const registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
 
@@ -103,53 +150,3 @@ function exportarCSV() {
   link.click();
   document.body.removeChild(link);
 }
-
-// SENHAS
-const senhaRegistro = "callcenter123";
-const senhaGestao = "admin123";
-
-// VERIFICAR LOGIN - registro.html
-function verificarLoginRegistro() {
-  const input = document.getElementById("senhaRegistro").value;
-  const erro = document.getElementById("erroLoginRegistro");
-  if (input === senhaRegistro) {
-    sessionStorage.setItem("logadoRegistro", "true");
-    document.getElementById("loginContainer").style.display = "none";
-    document.getElementById("registroContainer").style.display = "block";
-  } else {
-    erro.textContent = "Senha incorreta.";
-  }
-}
-
-// VERIFICAR LOGIN - gestao.html
-function verificarLoginGestao() {
-  const input = document.getElementById("senhaGestao").value;
-  const erro = document.getElementById("erroLoginGestao");
-  if (input === senhaGestao) {
-    sessionStorage.setItem("logadoGestao", "true");
-    document.getElementById("loginGestao").style.display = "none";
-    document.getElementById("gestaoContainer").style.display = "block";
-    carregarRegistros();
-  } else {
-    erro.textContent = "Senha incorreta.";
-  }
-}
-
-// LOGOUT
-function logout() {
-  sessionStorage.clear();
-  window.location.reload();
-}
-
-// AUTOLOGIN caso sessão esteja ativa
-document.addEventListener("DOMContentLoaded", () => {
-  if (sessionStorage.getItem("logadoRegistro") === "true") {
-    document.getElementById("loginContainer")?.style.display = "none";
-    document.getElementById("registroContainer")?.style.display = "block";
-  }
-  if (sessionStorage.getItem("logadoGestao") === "true") {
-    document.getElementById("loginGestao")?.style.display = "none";
-    document.getElementById("gestaoContainer")?.style.display = "block";
-    carregarRegistros();
-  }
-});
