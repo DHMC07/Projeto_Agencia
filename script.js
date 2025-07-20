@@ -103,3 +103,53 @@ function exportarCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
+// SENHAS
+const senhaRegistro = "callcenter123";
+const senhaGestao = "admin123";
+
+// VERIFICAR LOGIN - registro.html
+function verificarLoginRegistro() {
+  const input = document.getElementById("senhaRegistro").value;
+  const erro = document.getElementById("erroLoginRegistro");
+  if (input === senhaRegistro) {
+    sessionStorage.setItem("logadoRegistro", "true");
+    document.getElementById("loginContainer").style.display = "none";
+    document.getElementById("registroContainer").style.display = "block";
+  } else {
+    erro.textContent = "Senha incorreta.";
+  }
+}
+
+// VERIFICAR LOGIN - gestao.html
+function verificarLoginGestao() {
+  const input = document.getElementById("senhaGestao").value;
+  const erro = document.getElementById("erroLoginGestao");
+  if (input === senhaGestao) {
+    sessionStorage.setItem("logadoGestao", "true");
+    document.getElementById("loginGestao").style.display = "none";
+    document.getElementById("gestaoContainer").style.display = "block";
+    carregarRegistros();
+  } else {
+    erro.textContent = "Senha incorreta.";
+  }
+}
+
+// LOGOUT
+function logout() {
+  sessionStorage.clear();
+  window.location.reload();
+}
+
+// AUTOLOGIN caso sessão esteja ativa
+document.addEventListener("DOMContentLoaded", () => {
+  if (sessionStorage.getItem("logadoRegistro") === "true") {
+    document.getElementById("loginContainer")?.style.display = "none";
+    document.getElementById("registroContainer")?.style.display = "block";
+  }
+  if (sessionStorage.getItem("logadoGestao") === "true") {
+    document.getElementById("loginGestao")?.style.display = "none";
+    document.getElementById("gestaoContainer")?.style.display = "block";
+    carregarRegistros();
+  }
+});

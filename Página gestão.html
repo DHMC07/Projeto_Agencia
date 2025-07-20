@@ -4,15 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gestão de Registros</title>
-  <link rel="stylesheet" href="style_gest.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="senhaContainer">
-    <h2>Área Restrita</h2>
-    <p>Digite a senha para continuar:</p>
-    <input type="password" id="senhaInput" />
-    <button onclick="verificarSenha()">Entrar</button>
-    <p id="erroSenha"></p>
+  <div id="loginGestao">
+    <h2>Login - Gestão</h2>
+    <p>Digite a senha:</p>
+    <input type="password" id="senhaGestao" />
+    <button onclick="verificarLoginGestao()">Entrar</button>
+    <p id="erroLoginGestao" class="erroLogin"></p>
   </div>
 
   <div id="gestaoContainer" style="display: none;">
@@ -33,6 +33,7 @@
       <tbody></tbody>
     </table>
     <button onclick="exportarCSV()">Exportar CSV</button>
+    <button onclick="logout()">Sair</button>
   </div>
 
   <script src="script.js"></script>

@@ -4,62 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro de Clientes</title>
-  <link rel="stylesheet" href="style_assis.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Registro de Cliente para Viagem</h1>
-  <form id="registroForm">
-    <label>Nome do Cliente:
-      <input type="text" name="nome" required />
-    </label>
+  <div id="loginContainer">
+    <h2>Login - Call Center</h2>
+    <p>Digite a senha:</p>
+    <input type="password" id="senhaRegistro" />
+    <button onclick="verificarLoginRegistro()">Entrar</button>
+    <p id="erroLoginRegistro" class="erroLogin"></p>
+  </div>
 
-    <label>Número de Pessoas:
-      <input type="number" name="pessoas" min="1" required />
-    </label>
-
-    <label>Data de Ida:
-      <input type="date" name="dataIda" required />
-    </label>
-
-    <label>Data de Volta:
-      <input type="date" name="dataVolta" required />
-    </label>
-
-    <label>Datas são flexíveis?
-      <select name="flexivel">
-        <option value="Sim">Sim</option>
-        <option value="Não">Não</option>
-      </select>
-    </label>
-
-    <label>Aeroporto preferido:
-      <select name="aeroporto">
-        <option value="Lisboa">Lisboa</option>
-        <option value="Porto">Porto</option>
-        <option value="Faro">Faro</option>
-        <option value="Outro">Outro</option>
-      </select>
-    </label>
-
-    <label>Tipo de Regime:
-      <select name="regime">
-        <option value="Pequeno-almoço">Pequeno-almoço</option>
-        <option value="Meia pensão">Meia pensão</option>
-        <option value="Tudo incluído">Tudo incluído</option>
-      </select>
-    </label>
-
-    <label>Valor Máximo (€):
-      <input type="number" name="valor" min="0" required />
-    </label>
-
-    <label>Observações sobre o cliente:
-      <textarea name="observacoes"></textarea>
-    </label>
-
-    <button type="submit">Registrar</button>
-    <p id="mensagemSucesso"></p>
-  </form>
+  <div id="registroContainer" style="display: none;">
+    <h1>Registro de Cliente para Viagem</h1>
+    <form id="registroForm">
+      <!-- Campos do formulário -->
+      <label>Nome do Cliente:
+        <input type="text" name="nome" required />
+      </label>
+      <label>Número de Pessoas:
+        <input type="number" name="pessoas" min="1" required />
+      </label>
+      <label>Data de Ida:
+        <input type="date" name="dataIda" required />
+      </label>
+      <label>Data de Volta:
+        <input type="date" name="dataVolta" required />
+      </label>
+      <label>Datas são flexíveis?
+        <select name="flexivel">
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </label>
+      <label>Aeroporto preferido:
+        <select name="aeroporto">
+          <option value="Lisboa">Lisboa</option>
+          <option value="Porto">Porto</option>
+          <option value="Faro">Faro</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </label>
+      <label>Tipo de Regime:
+        <select name="regime">
+          <option value="Pequeno-almoço">Pequeno-almoço</option>
+          <option value="Meia pensão">Meia pensão</option>
+          <option value="Tudo incluído">Tudo incluído</option>
+        </select>
+      </label>
+      <label>Valor Máximo (€):
+        <input type="number" name="valor" min="0" required />
+      </label>
+      <label>Observações sobre o cliente:
+        <textarea name="observacoes"></textarea>
+      </label>
+      <button type="submit">Registrar</button>
+      <p id="mensagemSucesso"></p>
+      <button onclick="logout()">Sair</button>
+    </form>
+  </div>
 
   <script src="script.js"></script>
 </body>
