@@ -185,3 +185,38 @@ function iniciarMonitoramentoInatividade() {
     atualizarContadorSessao(LIMITE_SEGUNDOS - tempoInatividade);
   }, 1000);
 }
+
+function mostrarAvisoLogout(segundosRestantes) {
+  let aviso = document.createElement("div");
+  aviso.id = "avisoLogout";
+  aviso.innerHTML = `
+    <strong>⚠️ Sessão prestes a expirar!</strong><br>
+    Você será desconectado em <span id="contadorTempo">${segundosRestantes}</span> segundos.
+  `;
+  Object.assign(aviso.style, {
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    backgroundColor: '#737a5e',
+    color: 'white',
+    padding: '15px',
+    borderRadius: '8px',
+    zIndex: 9999,
+    boxShadow: '0 0 8px rgba(0,0,0,0.2)',
+    textAlign: 'center',
+    fontSize: '15px'
+  });
+  document.body.appendChild(aviso);
+}
+
+function esconderAvisoLogout() {
+  const aviso = document.getElementById("avisoLogout");
+  if (aviso) aviso.remove();
+}
+
+function atualizarContadorSessao(segundos) {
+  const contador = document.getElementById("contadorTempo");
+  if (contador) {
+    contador.textContent = segundos;
+  }
+}
