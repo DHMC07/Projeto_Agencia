@@ -2,40 +2,63 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Registro de Cliente - Call Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro de Clientes</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Registro de Cliente</h1>
-  <form id="clientForm">
-    <input type="text" name="nome" placeholder="Nome do Cliente" required />
-    <input type="text" name="telefone" placeholder="Telefone" required />
-    <input type="number" name="numPessoas" placeholder="Nº de pessoas a viajar" required />
-    
-    <label>Data de Início</label>
-    <input type="date" name="dataInicio" required />
-    <label>Data de Fim</label>
-    <input type="date" name="dataFim" required />
-    
-    <label><input type="checkbox" name="flexivel" /> Datas são flexíveis?</label>
-    
-    <input type="text" name="aeroporto" placeholder="Aeroporto de preferência" required />
-    
-    <select name="regime" required>
-      <option value="">Escolha o regime</option>
-      <option value="Pequeno-almoço">Pequeno-almoço</option>
-      <option value="Meia pensão">Meia pensão</option>
-      <option value="Tudo incluído">Tudo incluído</option>
-    </select>
-    
-    <input type="number" name="valor" placeholder="Valor estimado (€)" required />
-    <label>Data para retorno de chamada</label>
-    <input type="date" name="retorno" required />
-    
-    <textarea name="observacoes" placeholder="Observações sobre o cliente"></textarea>
-    
-    <button type="submit">Enviar</button>
-    <p id="mensagem"></p>
+  <h1>Registro de Cliente para Viagem</h1>
+  <form id="registroForm">
+    <label>Nome do Cliente:
+      <input type="text" name="nome" required />
+    </label>
+
+    <label>Número de Pessoas:
+      <input type="number" name="pessoas" min="1" required />
+    </label>
+
+    <label>Data de Ida:
+      <input type="date" name="dataIda" required />
+    </label>
+
+    <label>Data de Volta:
+      <input type="date" name="dataVolta" required />
+    </label>
+
+    <label>Datas são flexíveis?
+      <select name="flexivel">
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+      </select>
+    </label>
+
+    <label>Aeroporto preferido:
+      <select name="aeroporto">
+        <option value="Lisboa">Lisboa</option>
+        <option value="Porto">Porto</option>
+        <option value="Faro">Faro</option>
+        <option value="Outro">Outro</option>
+      </select>
+    </label>
+
+    <label>Tipo de Regime:
+      <select name="regime">
+        <option value="Pequeno-almoço">Pequeno-almoço</option>
+        <option value="Meia pensão">Meia pensão</option>
+        <option value="Tudo incluído">Tudo incluído</option>
+      </select>
+    </label>
+
+    <label>Valor Máximo (€):
+      <input type="number" name="valor" min="0" required />
+    </label>
+
+    <label>Observações sobre o cliente:
+      <textarea name="observacoes"></textarea>
+    </label>
+
+    <button type="submit">Registrar</button>
+    <p id="mensagemSucesso"></p>
   </form>
 
   <script src="script.js"></script>
