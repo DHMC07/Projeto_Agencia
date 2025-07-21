@@ -20,9 +20,8 @@
     <h1>Registro de Cliente para Viagem</h1>
     <form id="registroForm">
       <!-- Campos do formulário -->
-      <label>Nome do Cliente:
-        <input type="text" name="nome" required />
-      </label>
+      <label for="nomeCliente">Nome do Cliente:</label>
+        <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
       <label>Número de Pessoas:
         <input type="number" name="pessoas" min="1" required />
       </label>
