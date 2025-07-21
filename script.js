@@ -60,6 +60,11 @@ function logout() {
   window.location.reload();
 }
 
+function voltarInicio() {
+  window.location.href = "Tela inicio.html"; // ou o nome exato da página inicial, ex: "tela_inicio.html"
+}
+
+
 // ========== REGISTRO DE FORMULÁRIO ==========
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("registroForm");

@@ -36,6 +36,18 @@ body {
   border: 1px solid var(--cinza-claro);
 }
 
+button.voltar {
+  background-color: #ddd;
+  color: #333;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+button.voltar:hover {
+  background-color: #bbb;
+}
+
+
 .erroLogin {
   color: red;
   margin-top: 10px;

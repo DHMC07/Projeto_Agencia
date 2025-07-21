@@ -28,6 +28,17 @@ body {
   box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
 }
 
+button.voltar {
+  background-color: #ddd;
+  color: #333;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+button.voltar:hover {
+  background-color: #bbb;
+}
+
 #loginGestao input {
   width: 80%;
   padding: 10px;
