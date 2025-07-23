@@ -61,7 +61,7 @@ function logout() {
 }
 
 function voltarInicio() {
-  window.location.href = "Tela inicio.html"; // ou o nome exato da página inicial, ex: "tela_inicio.html"
+  window.location.href = "index.html"; // ou o nome exato da página inicial, ex: "tela_inicio.html"
 }
 
 
