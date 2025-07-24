@@ -7,18 +7,17 @@
   <link rel="stylesheet" href="style_gest.css" />
 </head>
 <body>
-  
- <div id="loginGestao">
-  <h2>Login - Gestão</h2>
-  <p>Digite a senha:</p>
-  <form id="formGestao">
-    <input type="password" id="senhaGestao" />
-    <button type="submit">Entrar</button>
-    <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
-  </form>
-  <p id="erroLoginGestao" class="erroLogin"></p>
-</div>
-
+  <!-- Login com Enter funcionando -->
+  <div id="loginGestao">
+    <h2>Login - Gestão</h2>
+    <p>Digite a senha:</p>
+    <form id="formGestao">
+      <input type="password" id="senhaGestao" />
+      <button type="submit">Entrar</button>
+      <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
+    </form>
+    <p id="erroLoginGestao" class="erroLogin"></p>
+  </div>
 
   <div id="gestaoContainer" style="display: none;">
     <h1>Registros de Clientes</h1>
@@ -42,5 +41,12 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Permitir login ao pressionar Enter
+    document.getElementById("formGestao").addEventListener("submit", function (event) {
+      event.preventDefault(); // Impede envio padrão
+      verificarLoginGestao(); // Chama a função de verificação
+    });
+  </script>
 </body>
 </html>
