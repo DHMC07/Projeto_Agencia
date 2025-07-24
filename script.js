@@ -41,13 +41,6 @@ function verificarLoginGestao() {
   } else {
     erro.textContent = "Senha incorreta.";
   }
-
-  document.getElementById("formGestao").addEventListener("submit", function(event) {
-  event.preventDefault(); // evita recarregar a página
-  verificarLoginGestao(); // chama a função que já usas
-});
-
-
 }
 
 // ========== FUNÇÕES VISUAIS ==========
