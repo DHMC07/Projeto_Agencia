@@ -6,13 +6,19 @@
   --branco: #ffffff;
 }
 
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--fundo);
   height: 100vh;
 }
 
+/* Layout principal */
 .tela-inicial {
   display: flex;
   height: 100vh;
@@ -31,13 +37,12 @@ body {
   justify-content: center;
   text-align: center;
   padding: 40px;
-  position: relative;
 }
 
 .mensagem-esquerda {
-  background-color: rgba(0, 0, 0, 0.4); /* melhora o contraste */
+  background-color: rgba(0, 0, 0, 0.4);
   padding: 20px 30px;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .mensagem-esquerda h2 {
@@ -63,6 +68,11 @@ body {
 .painel-login {
   text-align: center;
   max-width: 400px;
+  width: 100%;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .painel-login h1 {
@@ -90,9 +100,14 @@ body {
   font-size: 16px;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.botao:hover {
+  transform: scale(1.05);
 }
 
 .callcenter {
@@ -111,7 +126,7 @@ body {
   background-color: var(--verde-escuro);
 }
 
-/* Responsivo */
+/* Responsivo - Tablets */
 @media screen and (max-width: 768px) {
   .tela-inicial {
     flex-direction: column;
@@ -121,6 +136,7 @@ body {
     flex: none;
     width: 100%;
     height: 50%;
+    padding: 20px;
   }
 
   .mensagem-esquerda h2 {
@@ -138,5 +154,30 @@ body {
   .opcoes {
     flex-direction: column;
     gap: 15px;
+  }
+}
+
+/* Responsivo - Smartphones pequenos */
+@media screen and (max-width: 480px) {
+  .mensagem-esquerda h2 {
+    font-size: 20px;
+  }
+
+  .mensagem-esquerda p,
+  .painel-login p {
+    font-size: 14px;
+  }
+
+  .painel-login h1 {
+    font-size: 20px;
+  }
+
+  .botao {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .opcoes {
+    gap: 10px;
   }
 }
