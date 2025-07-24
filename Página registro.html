@@ -7,21 +7,24 @@
   <link rel="stylesheet" href="style_assis.css" />
 </head>
 <body>
+  <!-- Login com Enter funcionando -->
   <div id="loginContainer">
-  <h2>Login - Call Center</h2>
-  <p>Digite a senha:</p>
-  <input type="password" id="senhaRegistro" />
-  <button onclick="verificarLoginRegistro()">Entrar</button>
-  <button onclick="voltarInicio()" class="voltar">Voltar</button>
-  <p id="erroLoginRegistro" class="erroLogin"></p>
-</div>
+    <h2>Login - Call Center</h2>
+    <p>Digite a senha:</p>
+    <form id="formRegistro">
+      <input type="password" id="senhaRegistro" />
+      <button type="submit">Entrar</button>
+      <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
+    </form>
+    <p id="erroLoginRegistro" class="erroLogin"></p>
+  </div>
 
+  <!-- Formulário de Registro -->
   <div id="registroContainer" style="display: none;">
     <h1>Registro de Cliente para Viagem</h1>
     <form id="registroForm">
-      <!-- Campos do formulário -->
       <label for="nomeCliente">Nome do Cliente:</label>
-        <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
+      <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
       <label>Número de Pessoas:
         <input type="number" name="pessoas" min="1" required />
       </label>
@@ -60,10 +63,17 @@
       </label>
       <button type="submit">Registrar</button>
       <p id="mensagemSucesso"></p>
-      <button onclick="logout()">Sair</button>
+      <button type="button" onclick="logout()">Sair</button>
     </form>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Permite login com Enter
+    document.getElementById("formRegistro").addEventListener("submit", function (event) {
+      event.preventDefault(); // Evita recarregar
+      verificarLoginRegistro(); // Chama a função de login
+    });
+  </script>
 </body>
 </html>

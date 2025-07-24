@@ -7,14 +7,18 @@
   <link rel="stylesheet" href="style_gest.css" />
 </head>
 <body>
-  <div id="loginGestao">
-    <h2>Login - Gestão</h2>
-    <p>Digite a senha:</p>
+  
+ <div id="loginGestao">
+  <h2>Login - Gestão</h2>
+  <p>Digite a senha:</p>
+  <form id="formGestao">
     <input type="password" id="senhaGestao" />
-    <button onclick="verificarLoginGestao()">Entrar</button>
-    <button onclick="voltarInicio()" class="voltar">Voltar</button>
-    <p id="erroLoginGestao" class="erroLogin"></p>
-  </div>
+    <button type="submit">Entrar</button>
+    <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
+  </form>
+  <p id="erroLoginGestao" class="erroLogin"></p>
+</div>
+
 
   <div id="gestaoContainer" style="display: none;">
     <h1>Registros de Clientes</h1>
