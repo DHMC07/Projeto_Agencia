@@ -8,6 +8,10 @@
   --texto: #333;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--fundo);
@@ -28,6 +32,15 @@ body {
   box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
 }
 
+#loginGestao input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid var(--cinza-claro);
+}
+
 button.voltar {
   background-color: #ddd;
   color: #333;
@@ -37,15 +50,6 @@ button.voltar {
 
 button.voltar:hover {
   background-color: #bbb;
-}
-
-#loginGestao input {
-  width: 80%;
-  padding: 10px;
-  margin-top: 15px;
-  font-size: 16px;
-  border-radius: 5px;
-  border: 1px solid var(--cinza-claro);
 }
 
 .erroLogin {
@@ -62,16 +66,21 @@ h1 {
   text-align: center;
   color: var(--verde-escuro);
   margin-bottom: 25px;
+  font-size: 24px;
 }
 
 /* Tabela */
-table {
-  width: 100%;
-  border-collapse: collapse;
+.table-container {
+  overflow-x: auto;
   background-color: var(--branco);
   border-radius: 8px;
-  overflow: hidden;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
+}
+
+table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
 }
 
 th, td {
@@ -107,9 +116,14 @@ button:hover {
   background-color: var(--verde-escuro);
 }
 
+/* Responsivo */
 @media screen and (max-width: 768px) {
   body {
     padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
   }
 
   table, th, td {
@@ -118,5 +132,20 @@ button:hover {
 
   button {
     font-size: 14px;
+    padding: 10px;
+  }
+
+  #loginGestao {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  button {
+    width: 100%;
   }
 }

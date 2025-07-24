@@ -8,6 +8,10 @@
   --texto: #333;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--fundo);
@@ -28,7 +32,7 @@ body {
 }
 
 #loginContainer input {
-  width: 80%;
+  width: 100%;
   padding: 10px;
   margin-top: 15px;
   font-size: 16px;
@@ -47,7 +51,6 @@ button.voltar:hover {
   background-color: #bbb;
 }
 
-
 .erroLogin {
   color: red;
   margin-top: 10px;
@@ -65,12 +68,14 @@ h1 {
   text-align: center;
   color: var(--verde-escuro);
   margin-bottom: 25px;
+  font-size: 24px;
 }
 
 label {
   display: block;
   margin-bottom: 15px;
   font-weight: 500;
+  color: #333;
 }
 
 input, select, textarea {
@@ -112,12 +117,41 @@ button:hover {
   font-weight: bold;
 }
 
-@media screen and (max-width: 600px) {
+/* RESPONSIVO */
+@media screen and (max-width: 768px) {
   body {
     padding: 20px;
   }
 
+  #loginContainer,
+  #registroForm {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
   input, select, textarea, button {
     font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input, select, textarea {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
   }
 }
