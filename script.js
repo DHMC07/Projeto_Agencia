@@ -1,4 +1,4 @@
-// SENHAS
+// ========== SENHAS ==========
 const senhaRegistro = "registro123";
 const senhaGestao = "admin123";
 
@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarRegistros();
     iniciarAtualizacaoAutomatica();
   }
+
+  // Ativa aba selecionada por padrão (Round trip)
+  const abaAtiva = document.querySelector(".tab.active");
+  if (abaAtiva) selectTab(abaAtiva);
 });
 
 // ========== FUNÇÕES DE LOGIN ==========
@@ -61,9 +65,8 @@ function logout() {
 }
 
 function voltarInicio() {
-  window.location.href = "index.html"; // ou o nome exato da página inicial"
+  window.location.href = "index.html";
 }
-
 
 // ========== REGISTRO DE FORMULÁRIO ==========
 document.addEventListener("DOMContentLoaded", function () {
@@ -96,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// ========== AUTOCOMPLETE DE DESTINOS ==========
 document.addEventListener("DOMContentLoaded", () => {
   const destinoInput = document.getElementById("destinoInput");
   const sugestoesEl = document.getElementById("sugestoes");
@@ -148,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
     destinosHidden.value = selecionados.join(", ");
   }
 });
-
 
 // ========== EXIBIR REGISTROS ==========
 function carregarRegistros() {
@@ -210,10 +213,11 @@ function exportarCSV() {
   document.body.removeChild(link);
 }
 
+// ========== INATIVIDADE ==========
 let tempoInatividade = 0;
 const LIMITE_MINUTOS = 5;
 const LIMITE_SEGUNDOS = LIMITE_MINUTOS * 60;
-const AVISO_ANTES = 30; // segundos antes do logout para exibir aviso
+const AVISO_ANTES = 30;
 
 let avisoTimeoutMostrado = false;
 
@@ -277,5 +281,24 @@ function atualizarContadorSessao(segundos) {
   const contador = document.getElementById("contadorTempo");
   if (contador) {
     contador.textContent = segundos;
+  }
+}
+
+// ========== ABAS DE TIPO DE VIAGEM ==========
+function selectTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+
+  const tipo = tab.textContent.trim().toLowerCase();
+  const campoDataVolta = document.querySelector("input[name='dataVolta']");
+
+  if (campoDataVolta) {
+    if (tipo === "one way") {
+      campoDataVolta.closest("label").style.display = "none";
+      campoDataVolta.removeAttribute("required");
+    } else {
+      campoDataVolta.closest("label").style.display = "block";
+      campoDataVolta.setAttribute("required", "true");
+    }
   }
 }
