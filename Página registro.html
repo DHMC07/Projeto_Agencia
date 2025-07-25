@@ -32,6 +32,17 @@
   <button type="button" class="tab" onclick="selectTab(this)">One way</button>
   <button type="button" class="tab" onclick="selectTab(this)">Multicity</button>
 </div>
+
+   <label>
+  Destino(s):
+  <div id="destinoWrapper">
+    <input type="text" id="destinoInput" placeholder="Digite um destino..." />
+    <ul id="sugestoes"></ul>
+    <div id="destinosSelecionados"></div>
+    <input type="hidden" id="destinosHidden" name="destinos" />
+  </div>
+</label>
+
     <label>Data de Ida:
         <input type="date" name="dataIda" required />
       </label>
@@ -67,19 +78,6 @@
       <label>Valor Máximo (€):
         <input type="number" name="valor" min="0" required />
       </label>
-
-      <label>
-  Destino(s):
-  <div id="destinoWrapper">
-    <input type="text" id="destinoInput" placeholder="Digite um destino..." />
-    <ul id="sugestoes"></ul>
-    <div id="destinosSelecionados"></div>
-    <input type="hidden" id="destinosHidden" name="destinos" />
-  </div>
-</label>
-
-<div id="loginContainer"> ... </div>
-<div id="registroContainer" style="display: none;"> ... </div>
 
       <label>Observações sobre o cliente:
         <textarea name="observacoes"></textarea>
