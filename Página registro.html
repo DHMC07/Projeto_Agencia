@@ -25,6 +25,16 @@
     <form id="registroForm">
       <label for="nomeCliente">Nome do Cliente:</label>
       <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
+
+      <label>Destinos pretendidos:</label>
+<div id="destinoWrapper">
+  <input type="text" id="destinoInput" placeholder="Digite o destino..." autocomplete="off" />
+  <ul id="sugestoes"></ul>
+  <div id="destinosSelecionados"></div>
+</div>
+<input type="hidden" name="destinos" id="destinosHidden" />
+
+
       <label>Número de Pessoas:
         <input type="number" name="pessoas" min="1" required />
       </label>

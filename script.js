@@ -96,6 +96,60 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const destinoInput = document.getElementById("destinoInput");
+  const sugestoesEl = document.getElementById("sugestoes");
+  const destinosSelecionados = document.getElementById("destinosSelecionados");
+  const destinosHidden = document.getElementById("destinosHidden");
+
+  let destinos = [];
+  let selecionados = [];
+
+  fetch("destinos.json")
+    .then(res => res.json())
+    .then(data => destinos = data)
+    .catch(err => console.error("Erro ao carregar destinos:", err));
+
+  destinoInput.addEventListener("input", () => {
+    const input = destinoInput.value.toLowerCase();
+    sugestoesEl.innerHTML = "";
+
+    if (input.length === 0) return;
+
+    const filtrados = destinos.filter(dest => 
+      dest.toLowerCase().includes(input) && !selecionados.includes(dest)
+    ).slice(0, 5);
+
+    filtrados.forEach(dest => {
+      const li = document.createElement("li");
+      li.textContent = dest;
+      li.onclick = () => {
+        selecionados.push(dest);
+        atualizarDestinos();
+        destinoInput.value = "";
+        sugestoesEl.innerHTML = "";
+      };
+      sugestoesEl.appendChild(li);
+    });
+  });
+
+  function atualizarDestinos() {
+    destinosSelecionados.innerHTML = "";
+    selecionados.forEach((dest, index) => {
+      const span = document.createElement("span");
+      span.className = "destino-tag";
+      span.textContent = dest;
+      span.onclick = () => {
+        selecionados.splice(index, 1);
+        atualizarDestinos();
+      };
+      destinosSelecionados.appendChild(span);
+    });
+    destinosHidden.value = selecionados.join(", ");
+  }
+});
+
+
 // ========== EXIBIR REGISTROS ==========
 function carregarRegistros() {
   const tabelaBody = document.querySelector("#tabelaRegistros tbody");
