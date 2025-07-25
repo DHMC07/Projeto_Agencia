@@ -3,103 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro de Viagem</title>
-  <link rel="stylesheet" href="estilo.css" />
+  <title>Registro de Clientes</title>
+  <link rel="stylesheet" href="style_assis.css" />
 </head>
 <body>
-
-  <!-- LOGIN -->
+  <!-- Login com Enter funcionando -->
   <div id="loginContainer">
-    <h1>Login</h1>
-    <input type="password" id="senhaRegistro" placeholder="Digite a senha de acesso" />
-    <button onclick="verificarLoginRegistro()">Entrar</button>
-    <div class="erroLogin" id="erroLoginRegistro"></div>
+    <h2>Login - Comercial</h2>
+    <p>Digite a senha:</p>
+    <form id="formRegistro">
+      <input type="password" id="senhaRegistro" />
+      <button type="submit">Entrar</button>
+      <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
+    </form>
+    <p id="erroLoginRegistro" class="erroLogin"></p>
   </div>
 
-  <!-- FORMULÁRIO -->
+  <!-- Formulário de Registro -->
   <div id="registroContainer" style="display: none;">
+    <h1>Registro de Cliente para Viagem</h1>
     <form id="registroForm">
-      <h1>Formulário de Viagem</h1>
+      <label for="nomeCliente">Nome do Cliente:</label>
+      <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
 
-      <!-- ABAS -->
-      <div id="abasViagem">
-        <button type="button" class="tab active" onclick="selectTab(this)">Round trip</button>
-        <button type="button" class="tab" onclick="selectTab(this)">One way</button>
-        <button type="button" class="tab" onclick="selectTab(this)">Multicity</button>
-      </div>
+      <label>Destinos pretendidos:</label>
+<div id="destinoWrapper">
+  <input type="text" id="destinoInput" placeholder="Digite o destino..." autocomplete="off" />
+  <ul id="sugestoes"></ul>
+  <div id="destinosSelecionados"></div>
+</div>
+<input type="hidden" name="destinos" id="destinosHidden" />
 
-      <label>
-        Nome:
-        <input type="text" name="nome" required />
-      </label>
 
-      <label>
-        Quantidade de Pessoas:
+      <label>Número de Pessoas:
         <input type="number" name="pessoas" min="1" required />
       </label>
-
-      <label>
-        Data de Ida:
+      <label>Data de Ida:
         <input type="date" name="dataIda" required />
       </label>
-
-      <label>
-        Data de Volta:
+      <label>Data de Volta:
         <input type="date" name="dataVolta" required />
       </label>
-
-      <label>
-        Datas Flexíveis?
-        <select name="flexivel" required>
-          <option value="">Selecione</option>
+      <label>Datas são flexíveis?
+        <select name="flexivel">
           <option value="Sim">Sim</option>
           <option value="Não">Não</option>
         </select>
       </label>
-
-      <label>
-        Aeroporto Preferido:
-        <input type="text" name="aeroporto" required />
-      </label>
-
-      <label>
-        Regime:
-        <select name="regime" required>
-          <option value="">Selecione</option>
-          <option value="Só Pequeno-Almoço">Só Pequeno-Almoço</option>
-          <option value="Meia Pensão">Meia Pensão</option>
-          <option value="Tudo Incluído">Tudo Incluído</option>
+      <label>Aeroporto preferido:
+        <select name="aeroporto">
+          <option value="Lisboa">Lisboa</option>
+          <option value="Porto">Porto</option>
+          <option value="Faro">Faro</option>
+          <option value="Outro">Outro</option>
         </select>
       </label>
-
-      <label>
-        Valor Estimado (€):
-        <input type="number" name="valor" min="0" step="0.01" required />
+      <label>Tipo de Regime:
+        <select name="regime">
+          <option value="Pequeno-almoço">Pequeno-almoço</option>
+          <option value="Meia pensão">Meia pensão</option>
+          <option value="Tudo incluído">Tudo incluído</option>
+        </select>
       </label>
-
-      <!-- AUTOCOMPLETE DE DESTINOS -->
-      <label>
-        Destino(s):
-        <div id="destinoWrapper">
-          <input type="text" id="destinoInput" placeholder="Digite um destino..." />
-          <ul id="sugestoes"></ul>
-          <div id="destinosSelecionados"></div>
-          <input type="hidden" id="destinosHidden" name="destinos" />
-        </div>
+      <label>Valor Máximo (€):
+        <input type="number" name="valor" min="0" required />
       </label>
-
-      <label>
-        Observações:
-        <textarea name="observacoes" placeholder="Observações adicionais..."></textarea>
+      <label>Observações sobre o cliente:
+        <textarea name="observacoes"></textarea>
       </label>
-
+      <label>Nome do Agente:
+        <select name="NomeAgente">
+          <option value="Agente 1">Soaila Maia</option>
+          <option value="Agente 2">Telma Pires</option>
+          <option value="Agente 3">Délcio Costa</option>
+        </select>
+      </label>
       <button type="submit">Registrar</button>
-      <button type="button" class="voltar" onclick="voltarInicio()">Voltar</button>
-
-      <div id="mensagemSucesso"></div>
+      <p id="mensagemSucesso"></p>
+      <button type="button" onclick="logout()">Sair</button>
     </form>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Permite login com Enter
+    document.getElementById("formRegistro").addEventListener("submit", function (event) {
+      event.preventDefault(); // Evita recarregar
+      verificarLoginRegistro(); // Chama a função de login
+    });
+  </script>
 </body>
 </html>
