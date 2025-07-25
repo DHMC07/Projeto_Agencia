@@ -145,7 +145,6 @@ textarea {
   cursor: pointer;
 }
 
-
 button {
   margin-top: 20px;
   background-color: var(--verde-principal);
@@ -170,7 +169,72 @@ button:hover {
   font-weight: bold;
 }
 
-/* RESPONSIVO */
+/* Interface de busca de voos integrada */
+
+.booking-container {
+  background-color: var(--branco);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 18px;
+  border-radius: 20px;
+  background-color: var(--cinza-claro);
+  color: var(--texto);
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+}
+
+.tab:hover {
+  background-color: var(--verde-secundario);
+  color: white;
+}
+
+.tab.active {
+  background-color: var(--verde-principal);
+  color: white;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.input-box {
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-box label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--texto);
+}
+
+.input-box input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid var(--cinza-claro);
+  font-size: 15px;
+  background-color: #fdfdfb;
+}
+
+/* Responsivo */
 @media screen and (max-width: 768px) {
   body {
     padding: 20px;
@@ -187,6 +251,10 @@ button:hover {
 
   input, select, textarea, button {
     font-size: 15px;
+  }
+
+  .form-group {
+    flex-direction: column;
   }
 }
 
@@ -206,5 +274,10 @@ button:hover {
   button {
     font-size: 14px;
     padding: 10px;
+  }
+
+  .tab {
+    font-size: 13px;
+    padding: 8px 12px;
   }
 }
