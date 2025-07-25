@@ -1,5 +1,5 @@
 // SENHAS
-const senhaRegistro = "callcenter123";
+const senhaRegistro = "registro123";
 const senhaGestao = "admin123";
 
 // ========== LOGIN AUTOMÁTICO AO CARREGAR ==========
