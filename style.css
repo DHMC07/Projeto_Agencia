@@ -111,7 +111,7 @@ body {
 }
 
 .callcenter {
-  background-color: var(--verde-escuro);
+  background-color: var(--verde-secundario);
 }
 
 .callcenter:hover {
@@ -119,7 +119,7 @@ body {
 }
 
 .gestao {
-  background-color: var(--verde-principal);
+  background-color: var(--verde-secundario);
 }
 
 .gestao:hover {
