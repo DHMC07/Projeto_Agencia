@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
         valor: form.valor.value,
         observacoes: form.observacoes.value.trim(),
         dataRegistro: form.dataRegistro.value,
-        dataProximoContato: form.dataProximoContato.value
+        dataProximoContato: form.dataProximoContato.value,
+        nomeAgente: form.NomeAgente.value // <<< ADICIONADO: Nome do Agente
       };
 
       let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
@@ -187,7 +188,7 @@ function carregarRegistros() {
 
   if (registros.length === 0) {
       const noRecordsRow = document.createElement("tr");
-      noRecordsRow.innerHTML = `<td colspan="11" style="text-align: center; padding: 20px;">Nenhum registro encontrado.</td>`;
+      noRecordsRow.innerHTML = `<td colspan="12" style="text-align: center; padding: 20px;">Nenhum registro encontrado.</td>`; // Colspan ajustado para 12
       tabelaBody.appendChild(noRecordsRow);
       return;
   }
@@ -198,6 +199,7 @@ function carregarRegistros() {
     const dataReg = registro.dataRegistro || 'N/A';
     const dataProxContato = registro.dataProximoContato || 'N/A';
     const observacoesTexto = registro.observacoes || 'N/A';
+    const nomeAgente = registro.nomeAgente || 'N/A'; // <<< NOVO: Obter o nome do agente
 
     linha.innerHTML = `
       <td>${registro.nome || 'N/A'}</td>
@@ -210,7 +212,7 @@ function carregarRegistros() {
       <td>${observacoesTexto}</td>
       <td>${dataReg}</td>
       <td>${dataProxContato}</td>
-      <td>
+      <td>${nomeAgente}</td> <td>
         <button class="btn-acao editar-btn" onclick="editarRegistro(${index})">Editar</button>
         <button class="btn-acao eliminar-btn" onclick="eliminarRegistro(${index})">Eliminar</button>
       </td>
@@ -258,6 +260,8 @@ function editarRegistro(index) {
   document.getElementById('editObservacoes').value = registroParaEditar.observacoes || '';
   document.getElementById('editDataRegistro').value = registroParaEditar.dataRegistro || '';
   document.getElementById('editDataProximoContato').value = registroParaEditar.dataProximoContato || '';
+  // <<< NOVO: Preenche o campo do agente no modal de edição
+  document.getElementById('editNomeAgente').value = registroParaEditar.nomeAgente || 'Soaila Maia'; 
 
   // Exibe o modal
   document.getElementById('editModal').style.display = 'block';
@@ -285,7 +289,8 @@ document.addEventListener("DOMContentLoaded", function() {
         valor: document.getElementById('editValor').value,
         observacoes: document.getElementById('editObservacoes').value.trim(),
         dataRegistro: document.getElementById('editDataRegistro').value,
-        dataProximoContato: document.getElementById('editDataProximoContato').value
+        dataProximoContato: document.getElementById('editDataProximoContato').value,
+        nomeAgente: document.getElementById('editNomeAgente').value // <<< ADICIONADO: Salvar o nome do agente editado
       };
 
       localStorage.setItem("registrosViagem", JSON.stringify(registros));
@@ -330,7 +335,8 @@ function exportarCSV() {
     return;
   }
 
-  const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações", "Data Registro", "Próximo Contato"];
+  // <<< ADICIONADO: 'Nome Agente' ao cabeçalho CSV
+  const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações", "Data Registro", "Próximo Contato", "Nome Agente"];
   const linhas = registros.map(r => [
     r.nome, 
     r.pessoas, 
@@ -342,7 +348,8 @@ function exportarCSV() {
     r.valor, 
     `"${(r.observacoes || '').replace(/"/g, '""')}"`, 
     r.dataRegistro || '', 
-    r.dataProximoContato || '' 
+    r.dataProximoContato || '',
+    r.nomeAgente || '' // <<< ADICIONADO: Valor do Nome Agente
   ]);
 
   let csvContent = "data:text/csv;charset=utf-8," + [cabecalho.map(h => `"${h.replace(/"/g, '""')}"`).join(","), ...linhas.map(e => e.join(","))].join("\n");

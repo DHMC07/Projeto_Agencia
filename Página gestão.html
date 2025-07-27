@@ -34,7 +34,7 @@
             <th>Observações</th>
             <th>Data Registo</th> 
             <th>Próx. Contacto</th> 
-            <th>Ações</th> 
+            <th>Agente</th> <th>Ações</th> 
           </tr>
         </thead>
         <tbody></tbody>
@@ -96,6 +96,13 @@
 
         <label for="editDataProximoContato">Data para Próximo Contato:</label>
         <input type="date" id="editDataProximoContato" name="dataProximoContato" />
+
+        <label for="editNomeAgente">Nome do Agente:</label>
+        <select id="editNomeAgente" name="NomeAgente">
+            <option value="Soaila Maia">Soaila Maia</option>
+            <option value="Telma Pires">Telma Pires</option>
+            <option value="Délcio Costa">Délcio Costa</option>
+        </select>
 
         <button type="submit">Salvar Alterações</button>
         <button type="button" onclick="fecharModal()">Cancelar</button>
