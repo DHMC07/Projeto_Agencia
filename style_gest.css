@@ -57,10 +57,6 @@ button.voltar:hover {
   margin-top: 10px;
 }
 
-#gestaoContainer {
-  /* display: none; */ /* Será controlado pelo JS */
-}
-
 /* Cabeçalho */
 h1 {
   text-align: center;
