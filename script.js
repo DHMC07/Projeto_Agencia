@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarGestao();
     carregarRegistros();
     iniciarAtualizacaoAutomatica();
+    iniciarMonitoramentoInatividade(); // Inicia o monitoramento na página de gestão
   }
 
   // Ativa aba selecionada por padrão (Round trip)
@@ -42,6 +43,7 @@ function verificarLoginGestao() {
     mostrarGestao();
     carregarRegistros();
     iniciarAtualizacaoAutomatica();
+    iniciarMonitoramentoInatividade(); // Inicia o monitoramento após o login bem-sucedido
   } else {
     erro.textContent = "Senha incorreta.";
   }
@@ -95,7 +97,6 @@ document.addEventListener("DOMContentLoaded", function () {
         regime: form.regime.value,
         valor: form.valor.value,
         observacoes: form.observacoes.value.trim(),
-        // NOVOS CAMPOS DE DATA AQUI
         dataRegistro: form.dataRegistro.value,
         dataProximoContato: form.dataProximoContato.value
       };
@@ -127,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let destinos = [];
   let selecionados = [];
 
-  // Ajuste o caminho se 'destinos.json' não estiver na raiz do seu projeto ou em 'script.js'
   fetch("destinos.json") 
     .then(res => res.json())
     .then(data => destinos = data)
@@ -181,13 +181,12 @@ function carregarRegistros() {
 
   const registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
 
-  registros.forEach(registro => {
+  registros.forEach((registro, index) => { // Adicionado 'index' para identificar o registro
     const linha = document.createElement("tr");
 
-    // Garantir que os campos de data existam para evitar "undefined" na exibição
     const dataReg = registro.dataRegistro || 'N/A';
     const dataProxContato = registro.dataProximoContato || 'N/A';
-    const observacoesTexto = registro.observacoes || 'N/A'; // Para garantir que sempre haja um valor
+    const observacoesTexto = registro.observacoes || 'N/A';
 
     linha.innerHTML = `
       <td>${registro.nome || 'N/A'}</td>
@@ -200,16 +199,58 @@ function carregarRegistros() {
       <td>${observacoesTexto}</td>
       <td>${dataReg}</td>
       <td>${dataProxContato}</td>
+      <td>
+        <button class="btn-acao editar-btn" onclick="editarRegistro(${index})">Editar</button>
+        <button class="btn-acao eliminar-btn" onclick="eliminarRegistro(${index})">Eliminar</button>
+      </td>
     `;
 
     tabelaBody.appendChild(linha);
   });
 }
 
+// ========== FUNÇÕES DE EDIÇÃO E ELIMINAÇÃO ==========
+
+// Função para eliminar um registro
+function eliminarRegistro(index) {
+  if (confirm("Tem certeza que deseja eliminar este registro?")) {
+    let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
+    registros.splice(index, 1); // Remove o registro pelo índice
+    localStorage.setItem("registrosViagem", JSON.stringify(registros));
+    carregarRegistros(); // Recarrega a tabela para atualizar a exibição
+    alert("Registro eliminado com sucesso!");
+  }
+}
+
+// Função para editar um registro (Ainda precisa de um modal/formulário para a edição real)
+function editarRegistro(index) {
+  let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
+  const registroParaEditar = registros[index];
+
+  if (!registroParaEditar) {
+    alert("Registro não encontrado para edição.");
+    return;
+  }
+
+  // POR ENQUANTO: Apenas mostra os dados no console para demonstração
+  // Para uma edição real, você precisaria:
+  // 1. Criar um modal ou div flutuante com um formulário preenchido com os dados de 'registroParaEditar'.
+  // 2. Permitir que o usuário altere os dados.
+  // 3. Ao salvar, atualizar 'registros[index]' com os novos dados e salvar no localStorage.
+  // 4. Chamar carregarRegistros() novamente.
+  alert(`Editar registro de: ${registroParaEditar.nome}\n(Veja os detalhes no console para fins de demonstração)`);
+  console.log("Registro para editar:", registroParaEditar);
+  
+  // Exemplo BÁSICO de como você começaria a preencher um formulário (se existisse)
+  // document.getElementById('editNomeCliente').value = registroParaEditar.nome;
+  // document.getElementById('editDataRegistro').value = registroParaEditar.dataRegistro;
+  // ... e assim por diante para todos os campos
+}
+
+
 // ========== ATUALIZAÇÃO AUTOMÁTICA ==========
 function iniciarAtualizacaoAutomatica() {
   setInterval(() => {
-    // Verifica se gestaoContainer existe e está visível antes de carregar registros
     const gestaoContainer = document.getElementById("gestaoContainer");
     if (gestaoContainer && gestaoContainer.style.display === "block") {
       carregarRegistros();
@@ -226,7 +267,6 @@ function exportarCSV() {
     return;
   }
 
-  // Adicionar os novos cabeçalhos para exportação CSV
   const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações", "Data Registro", "Próximo Contato"];
   const linhas = registros.map(r => [
     r.nome, 
@@ -237,10 +277,9 @@ function exportarCSV() {
     r.aeroporto, 
     r.regime, 
     r.valor, 
-    // Escape observações que podem conter vírgulas ou quebras de linha
     `"${(r.observacoes || '').replace(/"/g, '""')}"`, 
-    r.dataRegistro || '', // Garante que campos ausentes sejam string vazia
-    r.dataProximoContato || '' // Garante que campos ausentes sejam string vazia
+    r.dataRegistro || '', 
+    r.dataProximoContato || '' 
   ]);
 
   let csvContent = "data:text/csv;charset=utf-8," + [cabecalho.map(h => `"${h.replace(/"/g, '""')}"`).join(","), ...linhas.map(e => e.join(","))].join("\n");
@@ -271,7 +310,7 @@ function resetarTimerInatividade() {
 function iniciarMonitoramentoInatividade() {
   document.addEventListener("mousemove", resetarTimerInatividade);
   document.addEventListener("keydown", resetarTimerInatividade);
-  document.addEventListener("click", resetarTimerInatividade); // Adicionado para cliques também
+  document.addEventListener("click", resetarTimerInatividade); 
 
   setInterval(() => {
     tempoInatividade++;
@@ -311,7 +350,6 @@ function mostrarAvisoLogout(segundosRestantes) {
     textAlign: 'center',
     fontSize: '15px'
   });
-  // Evitar adicionar o aviso múltiplas vezes se a função for chamada repetidamente
   if (!document.getElementById("avisoLogout")) {
     document.body.appendChild(aviso);
   }

@@ -71,15 +71,16 @@ h1 {
 
 /* Tabela */
 .table-container {
-  overflow-x: auto; /* Garante rolagem horizontal se a tabela for muito larga */
+  overflow-x: auto;
   background-color: var(--branco);
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px; /* Adicionado espaço abaixo da tabela */
 }
 
 table {
   width: 100%;
-  min-width: 800px; /* Garante um tamanho mínimo para a tabela para rolagem em telas pequenas */
+  min-width: 800px;
   border-collapse: collapse;
 }
 
@@ -87,6 +88,7 @@ th, td {
   padding: 14px 18px;
   text-align: left;
   border-bottom: 1px solid var(--cinza-claro);
+  vertical-align: middle; /* Alinha o conteúdo da célula verticalmente */
 }
 
 th {
@@ -99,7 +101,38 @@ tr:hover {
   background-color: #f0f0ea;
 }
 
-/* Botões */
+/* Estilos para os botões de ação na tabela */
+.btn-acao {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px; /* Espaço entre os botões */
+  transition: background-color 0.2s ease;
+  width: auto; /* Anula o width: 100% dos outros botões */
+  margin-top: 0; /* Anula o margin-top dos outros botões */
+}
+
+.editar-btn {
+  background-color: #007bff; /* Azul para editar */
+  color: white;
+}
+
+.editar-btn:hover {
+  background-color: #0056b3;
+}
+
+.eliminar-btn {
+  background-color: #dc3545; /* Vermelho para eliminar */
+  color: white;
+}
+
+.eliminar-btn:hover {
+  background-color: #c82333;
+}
+
+
+/* Botões gerais da página (Exportar, Sair) */
 button {
   background-color: var(--verde-principal);
   color: white;
@@ -138,6 +171,13 @@ button:hover {
   #loginGestao {
     padding: 20px;
   }
+
+  .btn-acao { /* Ajuste para botões de ação em telas menores */
+    display: block; /* Cada botão em sua própria linha */
+    width: 100%; /* Ocupa a largura total da célula */
+    margin-bottom: 5px; /* Espaço entre eles */
+    margin-right: 0;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -145,6 +185,7 @@ button:hover {
     font-size: 20px;
   }
 
+  /* Botões gerais da página */
   button {
     width: 100%;
   }
