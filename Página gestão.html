@@ -62,7 +62,9 @@
         <input type="date" id="editDataIda" name="dataIda" required />
 
         <label for="editDataVolta">Data de Volta:</label>
-        <input type="date" id="editDataVolta" name="dataVolta" /> <label for="editFlexivel">Datas são flexíveis?</label>
+        <input type="date" id="editDataVolta" name="dataVolta" /> 
+        
+        <label for="editFlexivel">Datas são flexíveis?</label>
         <select id="editFlexivel" name="flexivel">
           <option value="Sim">Sim</option>
           <option value="Não">Não</option>
@@ -117,12 +119,5 @@
   </div>
 
   <script src="script.js"></script>
-  <script>
-    // Permitir login ao pressionar Enter
-    document.getElementById("formGestao").addEventListener("submit", function (event) {
-      event.preventDefault(); // Impede envio padrão
-      verificarLoginGestao(); // Chama a função de verificação
-    });
-  </script>
 </body>
 </html>

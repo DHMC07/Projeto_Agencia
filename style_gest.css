@@ -58,7 +58,7 @@ button.voltar:hover {
 }
 
 #gestaoContainer {
-  display: none;
+  /* display: none; */ /* Será controlado pelo JS */
 }
 
 /* Cabeçalho */
