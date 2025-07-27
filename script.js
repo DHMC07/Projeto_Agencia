@@ -4,11 +4,7 @@ const senhaRegistro = "registro123";
 const senhaGestao = "admin123";
 
 // ========== ESTADO DO AUTOCOMPLETE DE DESTINOS ==========
-let todosDestinos = []; // Variável global para armazenar todos os destinos carregados
-// Variável específica para os destinos selecionados no formulário de REGISTRO
-let selecionadosRegistro = []; 
-// Variável específica para os destinos selecionados no modal de EDIÇÃO
-let editSelectedDestinos = []; 
+// (As variáveis globais já foram declaradas acima, não é necessário redeclarar)
 
 // ========== INICIALIZAÇÃO E EVENTOS AO CARREGAR A PÁGINA ==========
 document.addEventListener("DOMContentLoaded", () => {
@@ -32,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             dataRegistroInput.value = `${year}-${month}-${day}`;
-        }
 
         // Lógica de login e formulário de registro
         if (sessionStorage.getItem("logadoRegistro") === "true") {
@@ -64,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // Define a aba Round trip como ativa por padrão
         const roundTripTab = document.querySelector("#abasViagem .tab.active");
         if (roundTripTab) selectTab(roundTripTab);
-
 
     } else if (currentPage.includes("gestao.html")) {
         // Lógica de login e tabela de gestão
@@ -139,8 +133,9 @@ document.addEventListener("DOMContentLoaded", () => {
             cancelEditButton.addEventListener('click', fecharModal);
         }
     }
-});
-
+    }
+}
+);
 // ========== FUNÇÕES DE LOGIN ==========
 function verificarLogin(tipo) {
     const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao";
@@ -523,12 +518,12 @@ function exportarCSV() {
 
 
 // ========== MONITORAMENTO DE INATIVIDADE ==========
-let tempoInatividade = 0;
-const LIMITE_MINUTOS = 5; 
-const LIMITE_SEGUNDOS = LIMITE_MINUTOS * 60;
-const AVISO_ANTES = 30; 
+// let tempoInatividade = 0;
+// const LIMITE_MINUTOS = 5;  // Removed duplicate declaration
+// const LIMITE_SEGUNDOS = LIMITE_MINUTOS * 60; // Removed duplicate declaration
+// const AVISO_ANTES = 30;  // Removed duplicate declaration
 
-let avisoTimeoutMostrado = false;
+// let avisoTimeoutMostrado = false; // Removed duplicate declaration
 
 function resetarTimerInatividade() {
     tempoInatividade = 0;
@@ -617,36 +612,7 @@ function selectTab(tab) {
         }
     }
 }
-Obrigado por partilhar o código JavaScript e HTML da página de gestão.
 
-Com base no `script.js` que você forneceu, a lógica para a Content Security Policy (CSP) nos botões de "Editar" e "Eliminar" está correta, já que eles agora usam `addEventListener` em vez de `onclick` no HTML gerado. Isso explica por que a tabela de gestão está visível e populada com dados.
-
-No entanto, o problema de "não sair dessa página" pode estar relacionado a outros botões na página de gestão que ainda utilizam atributos `onclick` diretamente no HTML, e que a Content Security Policy do GitHub Pages pode estar a bloquear.
-
-Especificamente, no seu `gestao.html`, os seguintes botões ainda usam `onclick`:
-
-* **No formulário de login da Gestão:**
-    * `<button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>`
-* **Na `gestaoContainer`:**
-    * `<button onclick="exportarCSV()">Exportar CSV</button>`
-    * `<button onclick="logout()">Sair</button>`
-* **No modal de edição (`editModal`):**
-    * `<span class="close-button" onclick="fecharModal()">&times;</span>`
-    * `<button type="button" onclick="fecharModal()">Cancelar</button>`
-
-Esses `onclick`s inline precisam ser removidos do HTML e seus eventos devem ser anexados via JavaScript, assim como foi feito para os botões "Editar" e "Eliminar" dentro da função `carregarRegistros()`.
-
-Eu já havia fornecido uma versão atualizada do `script.js` em uma resposta anterior que incluía essas correções. Por favor, **certifique-se de que o seu `script.js` publicado no GitHub Pages é exatamente a versão completa que lhe dei**, que adiciona os event listeners para esses botões também.
-
-### `script.js` (Versão FINAL completa, com as correções para todos os `onclick`s)
-
-Abaixo está o código `script.js` completo e corrigido que você deve usar. Ele já inclui as alterações para os botões "Exportar CSV", "Sair", "Voltar" (no login) e os botões de fechar/cancelar do modal de edição, além dos botões da tabela.
-
-```javascript
-// ========== SENHAS (SENHAS EM TEXTO CLARO - PARA FINS DE DEPURACÃO E SIMPLICIDADE LOCAL) ==========
-// AVISO: NÃO USE SENHAS EM TEXTO CLARO EM PRODUÇÃO! ISSO É UM RISCO DE SEGURANÇA.
-const senhaRegistro = "registro123";
-const senhaGestao = "admin123";
 
 // ========== ESTADO DO AUTOCOMPLETE DE DESTINOS ==========
 let todosDestinos = []; // Variável global para armazenar todos os destinos carregados
