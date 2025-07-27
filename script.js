@@ -80,7 +80,7 @@ function voltarInicio() {
   window.location.href = "index.html";
 }
 
-// ========== REGISTRO DE FORMULÁRIO ==========
+// ========== REGISTRO DE FORMULÁRIO (PARA PÁGINA DE REGISTRO) ==========
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("registroForm");
   if (form) {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// ========== AUTOCOMPLETE DE DESTINOS ==========
+// ========== AUTOCOMPLETE DE DESTINOS (PARA PÁGINA DE REGISTRO) ==========
 document.addEventListener("DOMContentLoaded", () => {
   const destinoInput = document.getElementById("destinoInput");
   const sugestoesEl = document.getElementById("sugestoes");
@@ -128,33 +128,36 @@ document.addEventListener("DOMContentLoaded", () => {
   let destinos = [];
   let selecionados = [];
 
+  // Ajuste o caminho se 'destinos.json' não estiver na raiz do seu projeto ou em 'script.js'
   fetch("destinos.json") 
     .then(res => res.json())
     .then(data => destinos = data)
     .catch(err => console.error("Erro ao carregar destinos:", err));
 
-  destinoInput.addEventListener("input", () => {
-    const input = destinoInput.value.toLowerCase();
-    sugestoesEl.innerHTML = "";
+  if (destinoInput) { // Verifica se o elemento existe (estamos na página de registro)
+    destinoInput.addEventListener("input", () => {
+      const input = destinoInput.value.toLowerCase();
+      sugestoesEl.innerHTML = "";
 
-    if (input.length === 0) return;
+      if (input.length === 0) return;
 
-    const filtrados = destinos.filter(dest => 
-      dest.toLowerCase().includes(input) && !selecionados.includes(dest)
-    ).slice(0, 5);
+      const filtrados = destinos.filter(dest => 
+        dest.toLowerCase().includes(input) && !selecionados.includes(dest)
+      ).slice(0, 5);
 
-    filtrados.forEach(dest => {
-      const li = document.createElement("li");
-      li.textContent = dest;
-      li.onclick = () => {
-        selecionados.push(dest);
-        atualizarDestinos();
-        destinoInput.value = "";
-        sugestoesEl.innerHTML = "";
-      };
-      sugestoesEl.appendChild(li);
+      filtrados.forEach(dest => {
+        const li = document.createElement("li");
+        li.textContent = dest;
+        li.onclick = () => {
+          selecionados.push(dest);
+          atualizarDestinos();
+          destinoInput.value = "";
+          sugestoesEl.innerHTML = "";
+        };
+        sugestoesEl.appendChild(li);
+      });
     });
-  });
+  }
 
   function atualizarDestinos() {
     destinosSelecionados.innerHTML = "";
@@ -172,7 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ========== EXIBIR REGISTROS ==========
+
+// ========== EXIBIR REGISTROS (PARA PÁGINA DE GESTÃO) ==========
 function carregarRegistros() {
   const tabelaBody = document.querySelector("#tabelaRegistros tbody");
   if (!tabelaBody) return;
@@ -181,7 +185,14 @@ function carregarRegistros() {
 
   const registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
 
-  registros.forEach((registro, index) => { // Adicionado 'index' para identificar o registro
+  if (registros.length === 0) {
+      const noRecordsRow = document.createElement("tr");
+      noRecordsRow.innerHTML = `<td colspan="11" style="text-align: center; padding: 20px;">Nenhum registro encontrado.</td>`;
+      tabelaBody.appendChild(noRecordsRow);
+      return;
+  }
+
+  registros.forEach((registro, index) => { 
     const linha = document.createElement("tr");
 
     const dataReg = registro.dataRegistro || 'N/A';
@@ -209,7 +220,7 @@ function carregarRegistros() {
   });
 }
 
-// ========== FUNÇÕES DE EDIÇÃO E ELIMINAÇÃO ==========
+// ========== FUNÇÕES DE EDIÇÃO E ELIMINAÇÃO (PARA PÁGINA DE GESTÃO) ==========
 
 // Função para eliminar um registro
 function eliminarRegistro(index) {
@@ -222,7 +233,7 @@ function eliminarRegistro(index) {
   }
 }
 
-// Função para editar um registro (Ainda precisa de um modal/formulário para a edição real)
+// Função para abrir o modal de edição e preencher o formulário
 function editarRegistro(index) {
   let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
   const registroParaEditar = registros[index];
@@ -232,19 +243,71 @@ function editarRegistro(index) {
     return;
   }
 
-  // POR ENQUANTO: Apenas mostra os dados no console para demonstração
-  // Para uma edição real, você precisaria:
-  // 1. Criar um modal ou div flutuante com um formulário preenchido com os dados de 'registroParaEditar'.
-  // 2. Permitir que o usuário altere os dados.
-  // 3. Ao salvar, atualizar 'registros[index]' com os novos dados e salvar no localStorage.
-  // 4. Chamar carregarRegistros() novamente.
-  alert(`Editar registro de: ${registroParaEditar.nome}\n(Veja os detalhes no console para fins de demonstração)`);
-  console.log("Registro para editar:", registroParaEditar);
-  
-  // Exemplo BÁSICO de como você começaria a preencher um formulário (se existisse)
-  // document.getElementById('editNomeCliente').value = registroParaEditar.nome;
-  // document.getElementById('editDataRegistro').value = registroParaEditar.dataRegistro;
-  // ... e assim por diante para todos os campos
+  // Armazena o índice do registro que está sendo editado (hidden field)
+  document.getElementById('editIndex').value = index;
+
+  // Preenche o formulário do modal com os dados do registro
+  document.getElementById('editNome').value = registroParaEditar.nome || '';
+  document.getElementById('editPessoas').value = registroParaEditar.pessoas || '';
+  document.getElementById('editDataIda').value = registroParaEditar.dataIda || '';
+  document.getElementById('editDataVolta').value = registroParaEditar.dataVolta || '';
+  document.getElementById('editFlexivel').value = registroParaEditar.flexivel || 'Não'; // Default se vazio
+  document.getElementById('editAeroporto').value = registroParaEditar.aeroporto || 'Lisboa'; // Default se vazio
+  document.getElementById('editRegime').value = registroParaEditar.regime || 'Nada incluído'; // Default se vazio
+  document.getElementById('editValor').value = registroParaEditar.valor || '';
+  document.getElementById('editObservacoes').value = registroParaEditar.observacoes || '';
+  document.getElementById('editDataRegistro').value = registroParaEditar.dataRegistro || '';
+  document.getElementById('editDataProximoContato').value = registroParaEditar.dataProximoContato || '';
+
+  // Exibe o modal
+  document.getElementById('editModal').style.display = 'block';
+}
+
+// Event listener para o formulário de edição dentro do modal
+document.addEventListener("DOMContentLoaded", function() {
+  const editForm = document.getElementById("editForm");
+  if (editForm) {
+    editForm.addEventListener("submit", function (e) {
+      e.preventDefault(); // Impede o envio padrão do formulário
+
+      const index = document.getElementById('editIndex').value;
+      let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
+
+      // Atualiza o registro com os novos dados do formulário
+      registros[index] = {
+        nome: document.getElementById('editNome').value.trim(),
+        pessoas: document.getElementById('editPessoas').value,
+        dataIda: document.getElementById('editDataIda').value,
+        dataVolta: document.getElementById('editDataVolta').value,
+        flexivel: document.getElementById('editFlexivel').value,
+        aeroporto: document.getElementById('editAeroporto').value,
+        regime: document.getElementById('editRegime').value,
+        valor: document.getElementById('editValor').value,
+        observacoes: document.getElementById('editObservacoes').value.trim(),
+        dataRegistro: document.getElementById('editDataRegistro').value,
+        dataProximoContato: document.getElementById('editDataProximoContato').value
+      };
+
+      localStorage.setItem("registrosViagem", JSON.stringify(registros));
+      carregarRegistros(); // Recarrega a tabela para mostrar as alterações
+      fecharModal(); // Fecha o modal
+      alert("Registro atualizado com sucesso!");
+    });
+  }
+});
+
+
+// Função para fechar o modal
+function fecharModal() {
+  document.getElementById('editModal').style.display = 'none';
+}
+
+// Fechar o modal clicando fora dele
+window.onclick = function(event) {
+  const modal = document.getElementById('editModal');
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
 
 
@@ -367,7 +430,7 @@ function atualizarContadorSessao(segundos) {
   }
 }
 
-// ========== ABAS DE TIPO DE VIAGEM ==========
+// ========== ABAS DE TIPO DE VIAGEM (PARA PÁGINA DE REGISTRO) ==========
 function selectTab(tab) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   tab.classList.add("active");

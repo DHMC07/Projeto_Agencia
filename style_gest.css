@@ -17,21 +17,22 @@ body {
   background-color: var(--fundo);
   color: var(--texto);
   padding: 40px;
-  max-width: 700px;
+  max-width: 1200px;
   margin: auto;
 }
 
 /* Login */
-#loginContainer {
-  background-color: var(--branco);
+#loginGestao {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
   padding: 30px;
+  background-color: var(--branco);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
-  margin-bottom: 30px;
-  text-align: center;
 }
 
-#loginContainer input {
+#loginGestao input {
   width: 100%;
   padding: 10px;
   margin-top: 15px;
@@ -56,14 +57,11 @@ button.voltar:hover {
   margin-top: 10px;
 }
 
-/* Formulário */
-#registroForm {
-  background-color: var(--branco);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
+#gestaoContainer {
+  display: none;
 }
 
+/* Cabeçalho */
 h1 {
   text-align: center;
   color: var(--verde-escuro);
@@ -71,90 +69,83 @@ h1 {
   font-size: 24px;
 }
 
-label {
-  display: block;
-  margin-bottom: 15px;
-  font-weight: 500;
-  color: #333;
+/* Tabela */
+.table-container {
+  overflow-x: auto; /* Garante rolagem horizontal se a tabela for muito larga */
+  background-color: var(--branco);
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px; /* Adicionado espaço abaixo da tabela */
 }
 
-input, select, textarea {
+table {
   width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border: 1px solid var(--cinza-claro);
-  border-radius: 5px;
-  font-size: 15px;
-  background-color: #fdfdfb;
+  min-width: 800px;
+  border-collapse: collapse;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 80px;
+th, td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--cinza-claro);
+  vertical-align: middle; /* Alinha o conteúdo da célula verticalmente */
 }
 
-#destinoWrapper {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-#destinoInput {
-  padding: 10px;
-  font-size: 15px;
-  border: 1px solid var(--cinza-claro);
-  border-radius: 5px;
-  width: 100%;
-}
-
-#sugestoes {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  background: white;
-  border: 1px solid var(--cinza-claro);
-  border-top: none;
-  max-height: 150px;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  z-index: 10;
-}
-
-#sugestoes li {
-  padding: 10px;
-  cursor: pointer;
-}
-
-#sugestoes li:hover {
-  background-color: var(--cinza-claro);
-}
-
-#destinosSelecionados {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.destino-tag {
+th {
   background-color: var(--verde-secundario);
   color: white;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
+  font-weight: 600;
 }
 
+tr:hover {
+  background-color: #f0f0ea;
+}
+
+/* Estilos para os botões de ação na tabela (melhorado) */
+.btn-acao {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px; 
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  width: auto; 
+  margin-top: 0; 
+  background-color: transparent; /* Fundo transparente */
+  border: 1px solid; /* Borda visível */
+}
+
+.editar-btn {
+  color: #007bff; /* Texto azul */
+  border-color: #007bff; /* Borda azul */
+}
+
+.editar-btn:hover {
+  background-color: #007bff; /* Fundo azul no hover */
+  color: white; /* Texto branco no hover */
+}
+
+.eliminar-btn {
+  color: #dc3545; /* Texto vermelho */
+  border-color: #dc3545; /* Borda vermelha */
+}
+
+.eliminar-btn:hover {
+  background-color: #dc3545; /* Fundo vermelho no hover */
+  color: white; /* Texto branco no hover */
+}
+
+
+/* Botões gerais da página (Exportar, Sair) */
 button {
-  margin-top: 20px;
   background-color: var(--verde-principal);
   color: white;
+  padding: 10px 16px;
+  font-size: 15px;
   border: none;
-  padding: 12px 20px;
-  font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  width: 100%;
+  margin-top: 20px;
   transition: background-color 0.3s ease;
 }
 
@@ -162,77 +153,104 @@ button:hover {
   background-color: var(--verde-escuro);
 }
 
-#mensagemSucesso {
-  margin-top: 20px;
-  color: var(--verde-escuro);
-  text-align: center;
-  font-weight: bold;
+/* Estilos do Modal */
+.modal {
+  display: none; /* Escondido por padrão */
+  position: fixed; /* Fica por cima de tudo */
+  z-index: 1000; /* Z-index alto para ficar na frente */
+  left: 0;
+  top: 0;
+  width: 100%; /* Largura total */
+  height: 100%; /* Altura total */
+  overflow: auto; /* Permite scroll se o conteúdo for grande */
+  background-color: rgba(0,0,0,0.6); /* Fundo semi-transparente escuro */
+  padding-top: 60px; /* Espaço do topo */
 }
 
-/* Interface de busca de voos integrada */
-
-.booking-container {
+.modal-content {
   background-color: var(--branco);
+  margin: 5% auto; /* 5% do topo e centralizado horizontalmente */
+  padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(115, 122, 94, 0.1);
-  padding: 25px;
-  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 80%; /* Largura do modal */
+  max-width: 600px; /* Largura máxima */
+  position: relative;
 }
 
-.tabs {
-  display: flex;
-  gap: 15px;
+.modal-content h2 {
+  text-align: center;
+  color: var(--verde-escuro);
   margin-bottom: 20px;
 }
 
-.tab {
-  padding: 10px 18px;
-  border-radius: 20px;
-  background-color: var(--cinza-claro);
-  color: var(--texto);
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.2s ease;
-  font-size: 14px;
-}
-
-.tab:hover {
-  background-color: var(--verde-secundario);
-  color: white;
-}
-
-.tab.active {
-  background-color: var(--verde-principal);
-  color: white;
-}
-
-.form-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.input-box {
-  flex: 1;
-  min-width: 240px;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-box label {
+.modal-content label {
+  display: block;
+  margin-bottom: 8px;
   font-weight: 500;
-  margin-bottom: 6px;
-  color: var(--texto);
+  color: #333;
 }
 
-.input-box input {
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="date"],
+.modal-content select,
+.modal-content textarea {
+  width: calc(100% - 20px); /* Ajuste para padding */
   padding: 10px;
-  border-radius: 5px;
+  margin-bottom: 15px;
   border: 1px solid var(--cinza-claro);
+  border-radius: 5px;
   font-size: 15px;
   background-color: #fdfdfb;
 }
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-content button {
+  width: auto;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.modal-content button[type="submit"] {
+  background-color: var(--verde-principal);
+}
+
+.modal-content button[type="submit"]:hover {
+  background-color: var(--verde-escuro);
+}
+
+.modal-content button[type="button"] { /* Botão cancelar */
+  background-color: #6c757d; /* Cinza para cancelar */
+}
+
+.modal-content button[type="button"]:hover {
+  background-color: #5a6268;
+}
+
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute; /* Posiciona o X no canto superior direito */
+  top: 10px;
+  right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 
 /* Responsivo */
 @media screen and (max-width: 768px) {
@@ -240,34 +258,11 @@ button:hover {
     padding: 20px;
   }
 
-  #loginContainer,
-  #registroForm {
-    padding: 20px;
-  }
-
   h1 {
     font-size: 22px;
   }
 
-  input, select, textarea, button {
-    font-size: 15px;
-  }
-
-  .form-group {
-    flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  label {
-    font-size: 14px;
-  }
-
-  input, select, textarea {
+  table, th, td {
     font-size: 14px;
   }
 
@@ -276,8 +271,43 @@ button:hover {
     padding: 10px;
   }
 
-  .tab {
-    font-size: 13px;
-    padding: 8px 12px;
+  #loginGestao {
+    padding: 20px;
+  }
+
+  .btn-acao { 
+    display: block; 
+    width: 100%; 
+    margin-bottom: 5px; 
+    margin-right: 0;
+  }
+
+  .modal-content {
+    width: 95%; /* Modal um pouco maior em telas pequenas */
+    margin: 20px auto; /* Ajuste a margem */
+    padding: 20px;
+  }
+
+  .modal-content input,
+  .modal-content select,
+  .modal-content textarea,
+  .modal-content button {
+    width: 100%; /* Campos e botões do modal em 100% */
+    margin-right: 0;
+  }
+
+  .modal-content button {
+      margin-bottom: 10px; /* Espaço entre os botões */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  /* Botões gerais da página */
+  button {
+    width: 100%;
   }
 }
