@@ -78,65 +78,10 @@ function voltarInicio() {
   window.location.href = "index.html";
 }
 
-// ========== REGISTRO DE FORMULÁRIO (PARA PÁGINA DE REGISTRO) ==========
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("registroForm");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const dataIda = form.dataIda.value;
-      const dataVolta = form.dataVolta.value;
-
-      // Validação de datas
-      if (dataVolta && dataIda && new Date(dataVolta) < new Date(dataIda)) {
-          alert("A Data de Volta não pode ser anterior à Data de Ida.");
-          return; // Impede o envio do formulário
-      }
-
-      const dados = {
-        nome: form.nome.value.trim(),
-        pessoas: form.pessoas.value,
-        dataIda: dataIda,
-        dataVolta: dataVolta,
-        flexivel: form.flexivel.value,
-        aeroporto: form.aeroporto.value,
-        regime: form.regime.value,
-        valor: form.valor.value,
-        observacoes: form.observacoes.value.trim(),
-        dataRegistro: form.dataRegistro.value,
-        dataProximoContato: form.dataProximoContato.value,
-        nomeAgente: form.NomeAgente.value,
-        destinos: document.getElementById("destinosHidden").value // <<<< VERIFICAR SE O ID 'destinosHidden' ESTÁ CORRETO NO REGISTRO.HTML
-      };
-
-      let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
-      registros.push(dados);
-      localStorage.setItem("registrosViagem", JSON.stringify(registros));
-
-      form.reset();
-      // Limpa os destinos selecionados no formulário de registro
-      document.getElementById("destinosSelecionados").innerHTML = "";
-      document.getElementById("destinosHidden").value = "";
-      document.getElementById("destinoInput").value = ""; // Limpa também o input do autocomplete
-      
-      const mensagem = document.getElementById("mensagemSucesso");
-      mensagem.textContent = "Dados registrados com sucesso!";
-      setTimeout(() => mensagem.textContent = "", 3000);
-
-      if (document.getElementById("gestaoContainer") && document.getElementById("gestaoContainer").style.display === "block") {
-          carregarRegistros();
-      }
-    });
-  }
-});
-
 // ========== AUTOCOMPLETE DE DESTINOS (PARA PÁGINA DE REGISTRO E EDIÇÃO) ==========
-// Variável global para armazenar todos os destinos carregados
-let todosDestinos = [];
+let todosDestinos = []; // Variável global para armazenar todos os destinos carregados
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Carrega os destinos uma vez para uso em registro e edição
   fetch("destinos.json") 
     .then(res => res.json())
     .then(data => todosDestinos = data)
@@ -147,7 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const destinosSelecionados = document.getElementById("destinosSelecionados");
   const destinosHidden = document.getElementById("destinosHidden");
 
-  let selecionadosRegistro = []; // Variável para rastrear destinos selecionados no formulário de registro
+  // Esta variável 'selecionadosRegistro' é crucial para o estado do registro.html
+  let selecionadosRegistro = []; 
 
   if (destinoInput) {
     destinoInput.addEventListener("input", () => {
@@ -155,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Função genérica para lidar com o autocomplete
+  // Função genérica para lidar com o autocomplete de input
   function handleAutocompleteInput(inputElement, suggestionsElement, displayElement, hiddenInputElement, currentSelectedArray) {
     const input = inputElement.value.toLowerCase();
     suggestionsElement.innerHTML = "";
@@ -171,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
       li.textContent = dest;
       li.onclick = () => {
         currentSelectedArray.push(dest);
-        updateDestinosDisplay(displayElement.id, hiddenInputElement.id, currentSelectedArray, inputElement);
+        // Chama updateDestinosDisplay para atualizar a visualização e o campo hidden
+        updateDestinosDisplay(displayElement.id, hiddenInputElement.id, currentSelectedArray);
         inputElement.value = "";
         suggestionsElement.innerHTML = "";
       };
@@ -196,15 +143,77 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       displayElement.appendChild(span);
     });
-    hiddenInputElement.value = currentSelectedArray.join(", ");
+    // MUITO IMPORTANTE: Garante que o campo hidden seja atualizado AQUI
+    hiddenInputElement.value = currentSelectedArray.join(", "); 
     if (inputElementToClear) {
-        inputElementToClear.focus(); // Mantém o foco no input após adicionar
+        inputElementToClear.focus();
     }
   }
 
-  // Define a função de atualização para o formulário de registro (para garantir que selecionadosRegistro seja atualizado)
-  window.atualizarDestinosRegistro = function() {
-      updateDestinosDisplay("destinosSelecionados", "destinosHidden", selecionadosRegistro);
+  // Adiciona um listener para limpar os destinos de registro quando o formulário é resetado/enviado
+  document.addEventListener('resetDestinosRegistro', () => {
+      selecionadosRegistro = []; // Reseta a array para o próximo registro
+  });
+});
+
+
+// ========== REGISTRO DE FORMULÁRIO (PARA PÁGINA DE REGISTRO) ==========
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("registroForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const dataIda = form.dataIda.value;
+      const dataVolta = form.dataVolta.value;
+
+      // Validação de datas
+      if (dataVolta && dataIda && new Date(dataVolta) < new Date(dataIda)) {
+          alert("A Data de Volta não pode ser anterior à Data de Ida.");
+          return; // Impede o envio do formulário
+      }
+
+      // Verifique se 'destinosHidden' está presente no formulário e capture seu valor
+      const destinosHiddenInput = document.getElementById("destinosHidden");
+      const destinosSalvar = destinosHiddenInput ? destinosHiddenInput.value : '';
+
+      const dados = {
+        nome: form.nome.value.trim(),
+        pessoas: form.pessoas.value,
+        dataIda: dataIda,
+        dataVolta: dataVolta,
+        flexivel: form.flexivel.value,
+        aeroporto: form.aeroporto.value,
+        regime: form.regime.value,
+        valor: form.valor.value,
+        observacoes: form.observacoes.value.trim(),
+        dataRegistro: form.dataRegistro.value,
+        dataProximoContato: form.dataProximoContato.value,
+        nomeAgente: form.NomeAgente.value,
+        destinos: destinosSalvar // USANDO O VALOR CAPTURADO
+      };
+
+      let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
+      registros.push(dados);
+      localStorage.setItem("registrosViagem", JSON.stringify(registros));
+
+      form.reset();
+      // Limpa os elementos visíveis e o campo hidden dos destinos no formulário de registro
+      document.getElementById("destinosSelecionados").innerHTML = "";
+      document.getElementById("destinosHidden").value = "";
+      document.getElementById("destinoInput").value = ""; 
+      
+      // Dispara um evento customizado para limpar a array 'selecionadosRegistro'
+      document.dispatchEvent(new CustomEvent('resetDestinosRegistro'));
+
+      const mensagem = document.getElementById("mensagemSucesso");
+      mensagem.textContent = "Dados registrados com sucesso!";
+      setTimeout(() => mensagem.textContent = "", 3000);
+
+      if (document.getElementById("gestaoContainer") && document.getElementById("gestaoContainer").style.display === "block") {
+          carregarRegistros();
+      }
+    });
   }
 });
 
@@ -306,6 +315,7 @@ function editarRegistro(index) {
   if (registroParaEditar.destinos) {
       editSelectedDestinos = registroParaEditar.destinos.split(', ').filter(d => d.trim() !== '');
   }
+  // Chama updateDestinosDisplay para popular a exibição e o campo hidden
   window.updateDestinosDisplay(editDestinosDisplay.id, editDestinosHidden.id, editSelectedDestinos);
 
   // Re-atribui o event listener para o input do modal, usando a função genérica
