@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function verificarLogin(tipo) {
     const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao";
     const erroElementId = tipo === "registro" ? "erroLoginRegistro" : "erroLoginGestao";
-    // AQUI: Senha correta em texto puro
     const senhaCorreta = tipo === "registro" ? senhaRegistro : senhaGestao; 
     const sessionStorageKey = tipo === "registro" ? "logadoRegistro" : "logadoGestao";
     const mostrarFuncao = tipo === "registro" ? mostrarRegistro : mostrarGestao;
@@ -119,17 +118,14 @@ function verificarLogin(tipo) {
     const input = document.getElementById(senhaInputId).value;
     const erro = document.getElementById(erroElementId);
 
-    // --- LOGS PARA DEPURACÃO (Manter ou remover conforme necessário) ---
     console.log(`[LOGIN DEBUG] Tentativa de Login para: ${tipo}`);
     console.log(`[LOGIN DEBUG] Senha digitada: "${input}"`);
     console.log(`[LOGIN DEBUG] Senha esperada: "${senhaCorreta}"`);
-    // ------------------------------------------------------------------
 
-    // AQUI: Comparação direta com a senha em texto puro
     if (input === senhaCorreta) { 
         sessionStorage.setItem(sessionStorageKey, "true");
         mostrarFuncao();
-        console.log("[LOGIN DEBUG] Login BEM SUCEDIDO!"); // Adicionado para confirmar sucesso
+        console.log("[LOGIN DEBUG] Login BEM SUCEDIDO!"); 
         if (tipo === "gestao") {
             carregarRegistros();
             iniciarAtualizacaoAutomatica();
@@ -165,7 +161,7 @@ function voltarInicio() {
 // ========== AUTOCOMPLETE DE DESTINOS (GENÉRICO PARA REGISTRO E EDIÇÃO) ==========
 function handleAutocompleteInput(inputElement, suggestionsElement, displayElement, hiddenInputElement, currentSelectedArray) {
     const input = inputElement.value.toLowerCase();
-    suggestionsElement.innerHTML = ""; // Limpa sugestões anteriores
+    suggestionsElement.innerHTML = ""; 
 
     if (input.length === 0) return;
 
@@ -179,9 +175,9 @@ function handleAutocompleteInput(inputElement, suggestionsElement, displayElemen
         li.onclick = () => {
             currentSelectedArray.push(dest);
             updateDestinosDisplay(displayElement.id, hiddenInputElement.id, currentSelectedArray);
-            inputElement.value = ""; // Limpa o input após selecionar
-            suggestionsElement.innerHTML = ""; // Limpa a lista de sugestões
-            inputElement.focus(); // Mantém o foco no input
+            inputElement.value = ""; 
+            suggestionsElement.innerHTML = ""; 
+            inputElement.focus(); 
         };
         suggestionsElement.appendChild(li);
     });
@@ -199,35 +195,33 @@ function updateDestinosDisplay(displayElementId, hiddenInputId, currentSelectedA
         span.className = "destino-tag";
         span.textContent = dest;
         span.onclick = () => {
-            currentSelectedArray.splice(index, 1); // Remove o item
-            updateDestinosDisplay(displayElementId, hiddenInputId, currentSelectedArray); // Atualiza a exibição
+            currentSelectedArray.splice(index, 1); 
+            updateDestinosDisplay(displayElementId, hiddenInputId, currentSelectedArray); 
         };
         displayElement.appendChild(span);
     });
-    // MUITO IMPORTANTE: Garante que o campo hidden seja atualizado AQUI
     hiddenInputElement.value = currentSelectedArray.join(", "); 
 }
 
 // ========== VALIDAÇÃO DE DATAS ==========
 function validarDatasViagem(dataIdaStr, dataVoltaStr) {
-    // Se a data de volta não for preenchida, não há problema de validação
     if (!dataVoltaStr) return true; 
 
     if (dataIdaStr) {
         const dataIda = new Date(dataIdaStr);
         const dataVolta = new Date(dataVoltaStr);
         if (dataVolta < dataIda) {
-            return false; // Inválido
+            return false; 
         }
     }
-    return true; // Válido (ou se data de volta não foi fornecida)
+    return true; 
 }
 
 
 // ========== REGISTRO DE FORMULÁRIO (PARA PÁGINA DE REGISTRO) ==========
 function handleRegistroFormSubmit(e) {
     e.preventDefault();
-    const form = e.target; // O formulário que disparou o evento
+    const form = e.target; 
 
     const dataIda = form.dataIda.value;
     const dataVolta = form.dataVolta.value;
@@ -261,19 +255,16 @@ function handleRegistroFormSubmit(e) {
     localStorage.setItem("registrosViagem", JSON.stringify(registros));
 
     form.reset();
-    // Limpa os elementos visíveis e o campo hidden dos destinos no formulário de registro
     document.getElementById("destinosSelecionados").innerHTML = "";
     document.getElementById("destinosHidden").value = "";
     document.getElementById("destinoInput").value = ""; 
     
-    // Reseta a array de controle de destinos para o próximo registro
     selecionadosRegistro = []; 
 
     const mensagem = document.getElementById("mensagemSucesso");
     mensagem.textContent = "Dados registrados com sucesso!";
     setTimeout(() => mensagem.textContent = "", 3000);
 
-    // Se a página de gestão estiver visível, atualiza a tabela
     if (document.getElementById("gestaoContainer") && document.getElementById("gestaoContainer").style.display === "block") {
         carregarRegistros();
     }
@@ -298,7 +289,6 @@ function carregarRegistros() {
     registros.forEach((registro, index) => { 
         const linha = document.createElement("tr");
 
-        // Formatando datas para exibição (opcional, mas melhora a UX)
         const dataRegFormatada = registro.dataRegistro ? new Date(registro.dataRegistro).toLocaleDateString('pt-PT') : 'N/A';
         const dataProxContatoFormatada = registro.dataProximoContato ? new Date(registro.dataProximoContato).toLocaleDateString('pt-PT') : 'N/A';
         const dataIdaFormatada = registro.dataIda ? new Date(registro.dataIda).toLocaleDateString('pt-PT') : 'N/A';
@@ -322,13 +312,29 @@ function carregarRegistros() {
             <td>${nomeAgente}</td>
             <td>${destinosCliente}</td>
             <td>
-                <button class="btn-acao editar-btn" onclick="editarRegistro(${index})">Editar</button>
-                <button class="btn-acao eliminar-btn" onclick="eliminarRegistro(${index})">Eliminar</button>
+                <button class="btn-acao editar-btn" data-index="${index}">Editar</button>
+                <button class="btn-acao eliminar-btn" data-index="${index}">Eliminar</button>
             </td>
         `;
 
         tabelaBody.appendChild(linha);
     });
+
+    // === NOVIDADE AQUI: Atribuir eventos após os botões serem adicionados ao DOM ===
+    document.querySelectorAll('.editar-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const index = event.target.dataset.index;
+            editarRegistro(parseInt(index));
+        });
+    });
+
+    document.querySelectorAll('.eliminar-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const index = event.target.dataset.index;
+            eliminarRegistro(parseInt(index));
+        });
+    });
+    // ==============================================================================
 }
 
 // ========== FUNÇÕES DE EDIÇÃO E ELIMINAÇÃO (PARA PÁGINA DE GESTÃO) ==========
@@ -366,21 +372,17 @@ function editarRegistro(index) {
     document.getElementById('editDataProximoContato').value = registroParaEditar.dataProximoContato || '';
     document.getElementById('editNomeAgente').value = registroParaEditar.nomeAgente || 'Soaila Maia';
 
-    // Lógica para preencher e gerenciar destinos no modal de edição
     const editDestinosInput = document.getElementById("editDestinoInput");
     const editDestinosDisplay = document.getElementById("editDestinosSelecionados");
     const editDestinosHidden = document.getElementById("editDestinosHidden");
     
-    // Limpa o estado anterior do modal antes de preencher
     editDestinosInput.value = '';
     document.getElementById("editSugestoes").innerHTML = '';
 
-    editSelectedDestinos = []; // Importante resetar a array global do modal
+    editSelectedDestinos = []; 
     if (registroParaEditar.destinos) {
-        // Divide a string por ", " para obter a array de destinos
         editSelectedDestinos = registroParaEditar.destinos.split(', ').filter(d => d.trim() !== '');
     }
-    // Chama updateDestinosDisplay para popular a exibição e o campo hidden
     updateDestinosDisplay(editDestinosDisplay.id, editDestinosHidden.id, editSelectedDestinos);
     
     document.getElementById('editModal').style.display = 'block';
@@ -401,7 +403,6 @@ function handleEditFormSubmit(e) {
     const index = document.getElementById('editIndex').value;
     let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
 
-    // Captura o valor atualizado do campo hidden do modal
     const destinosAtualizados = document.getElementById('editDestinosHidden').value;
 
     registros[index] = {
@@ -417,7 +418,7 @@ function handleEditFormSubmit(e) {
         dataRegistro: document.getElementById('editDataRegistro').value,
         dataProximoContato: document.getElementById('editDataProximoContato').value,
         nomeAgente: document.getElementById('editNomeAgente').value,
-        destinos: destinosAtualizados // Salva o valor atualizado dos destinos
+        destinos: destinosAtualizados 
     };
 
     localStorage.setItem("registrosViagem", JSON.stringify(registros));
@@ -428,12 +429,11 @@ function handleEditFormSubmit(e) {
 
 function fecharModal() {
     document.getElementById('editModal').style.display = 'none';
-    // Limpar os campos do modal e a display de tags para o próximo uso
     document.getElementById('editDestinosSelecionados').innerHTML = '';
     document.getElementById('editDestinosHidden').value = '';
     document.getElementById('editDestinoInput').value = '';
     document.getElementById('editSugestoes').innerHTML = '';
-    editSelectedDestinos = []; // Reseta a array de controle do modal
+    editSelectedDestinos = []; 
 }
 
 
@@ -444,7 +444,7 @@ function iniciarAtualizacaoAutomatica() {
         if (gestaoContainer && gestaoContainer.style.display === "block") {
             carregarRegistros();
         }
-    }, 5000); // A cada 5 segundos
+    }, 5000); 
 }
 
 // ========== EXPORTAÇÃO CSV ==========
@@ -458,8 +458,6 @@ function exportarCSV() {
 
     const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações", "Data Registro", "Próximo Contato", "Nome Agente", "Destinos"];
     const linhas = registros.map(r => [
-        // Adiciona aspas em volta de campos que podem conter vírgulas ou quebras de linha
-        // E escapa aspas duplas dentro do conteúdo
         `"${(r.nome || '').replace(/"/g, '""')}"`, 
         r.pessoas, 
         r.dataIda, 
@@ -472,13 +470,12 @@ function exportarCSV() {
         r.dataRegistro || '', 
         r.dataProximoContato || '',
         `"${(r.nomeAgente || '').replace(/"/g, '""')}"`,
-        `"${(r.destinos || '').replace(/"/g, '""')}"` // Garante que destinos seja tratado como string e escapado
+        `"${(r.destinos || '').replace(/"/g, '""')}"` 
     ]);
 
-    // Constrói o CSV com o cabeçalho e as linhas
     let csvContent = "data:text/csv;charset=utf-8," + 
         [
-            cabecalho.map(h => `"${h.replace(/"/g, '""')}"`).join(","), // Escapa cabeçalhos também
+            cabecalho.map(h => `"${h.replace(/"/g, '""')}"`).join(","), 
             ...linhas.map(e => e.join(","))
         ].join("\n");
 
@@ -493,9 +490,9 @@ function exportarCSV() {
 
 // ========== MONITORAMENTO DE INATIVIDADE ==========
 let tempoInatividade = 0;
-const LIMITE_MINUTOS = 5; // Tempo limite para logout por inatividade
+const LIMITE_MINUTOS = 5; 
 const LIMITE_SEGUNDOS = LIMITE_MINUTOS * 60;
-const AVISO_ANTES = 30; // Segundos antes do logout para mostrar aviso
+const AVISO_ANTES = 30; 
 
 let avisoTimeoutMostrado = false;
 
@@ -530,7 +527,7 @@ function iniciarMonitoramentoInatividade() {
 
 function mostrarAvisoLogout(segundosRestantes) {
     let aviso = document.getElementById("avisoLogout");
-    if (!aviso) { // Cria o aviso apenas se não existir
+    if (!aviso) { 
         aviso = document.createElement("div");
         aviso.id = "avisoLogout";
         document.body.appendChild(aviso);
@@ -563,7 +560,7 @@ function esconderAvisoLogout() {
 function atualizarContadorSessao(segundos) {
     const contador = document.getElementById("contadorTempo");
     if (contador) {
-        contador.textContent = Math.max(0, segundos); // Garante que não mostre números negativos
+        contador.textContent = Math.max(0, segundos); 
     }
 }
 
@@ -579,7 +576,7 @@ function selectTab(tab) {
         if (tipo === "one way") {
             campoDataVolta.closest("label").style.display = "none";
             campoDataVolta.removeAttribute("required");
-            campoDataVolta.value = ''; // Limpa o valor para não salvar data indesejada
+            campoDataVolta.value = ''; 
         } else {
             campoDataVolta.closest("label").style.display = "block";
             campoDataVolta.setAttribute("required", "true");
