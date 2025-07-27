@@ -51,6 +51,16 @@ function verificarLoginGestao() {
 function mostrarRegistro() {
   document.getElementById("loginContainer").style.display = "none";
   document.getElementById("registroContainer").style.display = "block";
+
+  // Preencher a "Data de Registro" automaticamente
+  const dataRegistroInput = document.getElementById('dataRegistro');
+  if (dataRegistroInput) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Mês é 0-indexado
+    const day = String(today.getDate()).padStart(2, '0');
+    dataRegistroInput.value = `${year}-${month}-${day}`;
+  }
 }
 
 function mostrarGestao() {
@@ -84,7 +94,10 @@ document.addEventListener("DOMContentLoaded", function () {
         aeroporto: form.aeroporto.value,
         regime: form.regime.value,
         valor: form.valor.value,
-        observacoes: form.observacoes.value.trim()
+        observacoes: form.observacoes.value.trim(),
+        // NOVOS CAMPOS DE DATA AQUI
+        dataRegistro: form.dataRegistro.value,
+        dataProximoContato: form.dataProximoContato.value
       };
 
       let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
@@ -95,6 +108,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const mensagem = document.getElementById("mensagemSucesso");
       mensagem.textContent = "Dados registrados com sucesso!";
       setTimeout(() => mensagem.textContent = "", 3000);
+
+      // Opcional: Recarregar a tabela na página de gestão se estiver visível (após o registro)
+      if (document.getElementById("gestaoContainer") && document.getElementById("gestaoContainer").style.display === "block") {
+          carregarRegistros();
+      }
     });
   }
 });
@@ -109,7 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let destinos = [];
   let selecionados = [];
 
-  fetch("destinos.json")
+  // Ajuste o caminho se 'destinos.json' não estiver na raiz do seu projeto ou em 'script.js'
+  fetch("destinos.json") 
     .then(res => res.json())
     .then(data => destinos = data)
     .catch(err => console.error("Erro ao carregar destinos:", err));
@@ -165,15 +184,22 @@ function carregarRegistros() {
   registros.forEach(registro => {
     const linha = document.createElement("tr");
 
+    // Garantir que os campos de data existam para evitar "undefined" na exibição
+    const dataReg = registro.dataRegistro || 'N/A';
+    const dataProxContato = registro.dataProximoContato || 'N/A';
+    const observacoesTexto = registro.observacoes || 'N/A'; // Para garantir que sempre haja um valor
+
     linha.innerHTML = `
-      <td>${registro.nome}</td>
-      <td>${registro.pessoas}</td>
-      <td>${registro.dataIda} até ${registro.dataVolta}</td>
-      <td>${registro.flexivel}</td>
-      <td>${registro.aeroporto}</td>
-      <td>${registro.regime}</td>
-      <td>${registro.valor}</td>
-      <td>${registro.observacoes}</td>
+      <td>${registro.nome || 'N/A'}</td>
+      <td>${registro.pessoas || 'N/A'}</td>
+      <td>${registro.dataIda || 'N/A'} até ${registro.dataVolta || 'N/A'}</td>
+      <td>${registro.flexivel || 'N/A'}</td>
+      <td>${registro.aeroporto || 'N/A'}</td>
+      <td>${registro.regime || 'N/A'}</td>
+      <td>${registro.valor || 'N/A'}</td>
+      <td>${observacoesTexto}</td>
+      <td>${dataReg}</td>
+      <td>${dataProxContato}</td>
     `;
 
     tabelaBody.appendChild(linha);
@@ -183,7 +209,9 @@ function carregarRegistros() {
 // ========== ATUALIZAÇÃO AUTOMÁTICA ==========
 function iniciarAtualizacaoAutomatica() {
   setInterval(() => {
-    if (document.getElementById("gestaoContainer").style.display === "block") {
+    // Verifica se gestaoContainer existe e está visível antes de carregar registros
+    const gestaoContainer = document.getElementById("gestaoContainer");
+    if (gestaoContainer && gestaoContainer.style.display === "block") {
       carregarRegistros();
     }
   }, 5000);
@@ -198,12 +226,24 @@ function exportarCSV() {
     return;
   }
 
-  const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações"];
+  // Adicionar os novos cabeçalhos para exportação CSV
+  const cabecalho = ["Nome", "Pessoas", "DataIda", "DataVolta", "Flexível", "Aeroporto", "Regime", "Valor (€)", "Observações", "Data Registro", "Próximo Contato"];
   const linhas = registros.map(r => [
-    r.nome, r.pessoas, r.dataIda, r.dataVolta, r.flexivel, r.aeroporto, r.regime, r.valor, r.observacoes
+    r.nome, 
+    r.pessoas, 
+    r.dataIda, 
+    r.dataVolta, 
+    r.flexivel, 
+    r.aeroporto, 
+    r.regime, 
+    r.valor, 
+    // Escape observações que podem conter vírgulas ou quebras de linha
+    `"${(r.observacoes || '').replace(/"/g, '""')}"`, 
+    r.dataRegistro || '', // Garante que campos ausentes sejam string vazia
+    r.dataProximoContato || '' // Garante que campos ausentes sejam string vazia
   ]);
 
-  let csvContent = "data:text/csv;charset=utf-8," + [cabecalho, ...linhas].map(e => e.join(",")).join("\n");
+  let csvContent = "data:text/csv;charset=utf-8," + [cabecalho.map(h => `"${h.replace(/"/g, '""')}"`).join(","), ...linhas.map(e => e.join(","))].join("\n");
 
   const link = document.createElement("a");
   link.setAttribute("href", encodeURI(csvContent));
@@ -212,6 +252,7 @@ function exportarCSV() {
   link.click();
   document.body.removeChild(link);
 }
+
 
 // ========== INATIVIDADE ==========
 let tempoInatividade = 0;
@@ -230,6 +271,7 @@ function resetarTimerInatividade() {
 function iniciarMonitoramentoInatividade() {
   document.addEventListener("mousemove", resetarTimerInatividade);
   document.addEventListener("keydown", resetarTimerInatividade);
+  document.addEventListener("click", resetarTimerInatividade); // Adicionado para cliques também
 
   setInterval(() => {
     tempoInatividade++;
@@ -269,7 +311,10 @@ function mostrarAvisoLogout(segundosRestantes) {
     textAlign: 'center',
     fontSize: '15px'
   });
-  document.body.appendChild(aviso);
+  // Evitar adicionar o aviso múltiplas vezes se a função for chamada repetidamente
+  if (!document.getElementById("avisoLogout")) {
+    document.body.appendChild(aviso);
+  }
 }
 
 function esconderAvisoLogout() {
