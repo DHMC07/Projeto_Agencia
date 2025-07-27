@@ -1,7 +1,7 @@
 // ========== SENHAS (SENHAS EM TEXTO CLARO - PARA FINS DE DEPURACÃO E SIMPLICIDADE LOCAL) ==========
 // AVISO: NÃO USE SENHAS EM TEXTO CLARO EM PRODUÇÃO! ISSO É UM RISCO DE SEGURANÇA.
 const senhaRegistro = "registro123";
-const senhaGestao = "admin123";
+const senhaGestao = "";
 
 // ========== ESTADO DO AUTOCOMPLETE DE DESTINOS ==========
 // (As variáveis globais já foram declaradas acima, não é necessário redeclarar)
