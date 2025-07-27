@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     // MUITO IMPORTANTE: Garante que o campo hidden seja atualizado AQUI
     hiddenInputElement.value = currentSelectedArray.join(", "); 
-    console.log(`[DEBUG] updateDestinosDisplay: Campo Hidden '${hiddenInputId}' atualizado para: "${hiddenInputElement.value}"`); // ADICIONADO PARA DEPURAR
+    console.log(`[DEBUG] updateDestinosDisplay: Campo Hidden '${hiddenInputId}' atualizado para: "${hiddenInputElement.value}"`);
     if (inputElementToClear) {
         inputElementToClear.focus();
     }
@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Verifique se 'destinosHidden' está presente no formulário e capture seu valor
       const destinosHiddenInput = document.getElementById("destinosHidden");
       const destinosSalvar = destinosHiddenInput ? destinosHiddenInput.value : '';
-      console.log("[DEBUG] Valor de 'destinosHidden' no submit do registro:", destinosSalvar); // ADICIONADO PARA DEPURAR
+      console.log("[DEBUG] Valor de 'destinosHidden' no submit do registro:", destinosSalvar);
 
       const dados = {
         nome: form.nome.value.trim(),
@@ -194,12 +194,12 @@ document.addEventListener("DOMContentLoaded", function () {
         nomeAgente: form.NomeAgente.value,
         destinos: destinosSalvar // USANDO O VALOR CAPTURADO
       };
-      console.log("[DEBUG] Dados completos a serem salvos:", dados); // ADICIONADO PARA DEPURAR
+      console.log("[DEBUG] Dados completos a serem salvos:", dados);
 
       let registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
       registros.push(dados);
       localStorage.setItem("registrosViagem", JSON.stringify(registros));
-      console.log("[DEBUG] Registros após salvar:", JSON.parse(localStorage.getItem("registrosViagem"))); // ADICIONADO PARA DEPURAR
+      console.log("[DEBUG] Registros após salvar:", JSON.parse(localStorage.getItem("registrosViagem")));
 
       form.reset();
       // Limpa os elementos visíveis e o campo hidden dos destinos no formulário de registro
@@ -230,7 +230,7 @@ function carregarRegistros() {
   tabelaBody.innerHTML = "";
 
   const registros = JSON.parse(localStorage.getItem("registrosViagem")) || [];
-  console.log("[DEBUG] Registros lidos do localStorage para carregar tabela:", registros); // ADICIONADO PARA DEPURAR
+  console.log("[DEBUG] Registros lidos do localStorage para carregar tabela:", registros);
 
   if (registros.length === 0) {
       const noRecordsRow = document.createElement("tr");
@@ -247,7 +247,7 @@ function carregarRegistros() {
     const observacoesTexto = registro.observacoes || 'N/A';
     const nomeAgente = registro.nomeAgente || 'N/A';
     const destinosCliente = registro.destinos || 'N/A'; 
-    console.log(`[DEBUG] Registro ${index}: Nome: ${registro.nome}, Destinos: "${destinosCliente}"`); // ADICIONADO PARA DEPURAR
+    console.log(`[DEBUG] Registro ${index}: Nome: ${registro.nome}, Destinos: "${destinosCliente}"`);
 
     linha.innerHTML = `
       <td>${registro.nome || 'N/A'}</td>
@@ -342,7 +342,8 @@ document.addEventListener("DOMContentLoaded", function() {
       const dataVolta = document.getElementById('editDataVolta').value;
 
       // Validação de datas no modal de edição
-      if (dataVolta && dataIda && new Date(dataVolta) < new Date(dataIda)) {
+      // A validação de data de volta ser anterior à data de ida só ocorre se a data de volta for preenchida
+      if (dataVolta && dataIda && new Date(dataVolta) < new Date(dataIda)) { // ALTERADO AQUI
           alert("A Data de Volta não pode ser anterior à Data de Ida.");
           return; // Impede o envio do formulário
       }
