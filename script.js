@@ -129,6 +129,7 @@ function verificarLogin(tipo) {
     if (input === senhaCorreta) { 
         sessionStorage.setItem(sessionStorageKey, "true");
         mostrarFuncao();
+        console.log("[LOGIN DEBUG] Login BEM SUCEDIDO!"); // Adicionado para confirmar sucesso
         if (tipo === "gestao") {
             carregarRegistros();
             iniciarAtualizacaoAutomatica();
