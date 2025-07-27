@@ -27,9 +27,7 @@
       <label>Data de Registro:
           <input type="date" id="dataRegistro" name="dataRegistro" required />
       </label>
-      <label>Data para Próximo Contato:
-          <input type="date" id="dataProximoContato" name="dataProximoContato" />
-      </label>
+      
       <div id="abasViagem">
       <button type="button" class="tab active" onclick="selectTab(this)">Round trip</button>
       <button type="button" class="tab" onclick="selectTab(this)">One way</button>
@@ -93,6 +91,11 @@
             <option value="Agente 3">Délcio Costa</option>
           </select>
         </label>
+
+      <label>Data para Próximo Contato:
+          <input type="date" id="dataProximoContato" name="dataProximoContato" />
+      </label>
+
         <button type="submit">Registrar</button>
         <p id="mensagemSucesso"></p>
         <button type="button" onclick="logout()">Sair</button>
