@@ -34,7 +34,8 @@
             <th>Observações</th>
             <th>Data Registo</th> 
             <th>Próx. Contacto</th> 
-            <th>Agente</th> <th>Ações</th> 
+            <th>Agente</th> 
+            <th>Destino(s)</th> <th>Ações</th> 
           </tr>
         </thead>
         <tbody></tbody>
@@ -104,6 +105,13 @@
             <option value="Délcio Costa">Délcio Costa</option>
         </select>
 
+        <label>Destino(s):</label>
+        <div id="editDestinoWrapper" class="destino-wrapper">
+          <input type="text" id="editDestinoInput" placeholder="Digite um destino..." />
+          <ul id="editSugestoes" class="sugestoes"></ul>
+          <div id="editDestinosSelecionados" class="destinos-selecionados"></div>
+          <input type="hidden" id="editDestinosHidden" name="destinos" />
+        </div>
         <button type="submit">Salvar Alterações</button>
         <button type="button" onclick="fecharModal()">Cancelar</button>
       </form>
