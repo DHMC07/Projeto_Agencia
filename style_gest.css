@@ -71,7 +71,7 @@ h1 {
 
 /* Tabela */
 .table-container {
-  overflow-x: auto;
+  overflow-x: auto; /* Garante rolagem horizontal se a tabela for muito larga */
   background-color: var(--branco);
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
@@ -79,7 +79,7 @@ h1 {
 
 table {
   width: 100%;
-  min-width: 800px;
+  min-width: 800px; /* Garante um tamanho mínimo para a tabela para rolagem em telas pequenas */
   border-collapse: collapse;
 }
 

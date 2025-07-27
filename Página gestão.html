@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style_gest.css" />
 </head>
 <body>
-  <!-- Login com Enter funcionando -->
   <div id="loginGestao">
     <h2>Login - Gestão</h2>
     <p>Digite a senha:</p>
@@ -21,21 +20,22 @@
 
   <div id="gestaoContainer" style="display: none;">
     <h1>Registros de Clientes</h1>
-    <table id="tabelaRegistros">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Pessoas</th>
-          <th>Datas</th>
-          <th>Flexível</th>
-          <th>Aeroporto</th>
-          <th>Regime</th>
-          <th>Valor (€)</th>
-          <th>Observações</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="table-container"> 
+      <table id="tabelaRegistros">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Pessoas</th>
+            <th>Período</th> <th>Flexível</th>
+            <th>Aeroporto</th>
+            <th>Regime</th>
+            <th>Valor (€)</th>
+            <th>Observações</th>
+            <th>Data Registo</th> <th>Próx. Contacto</th> </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
     <button onclick="exportarCSV()">Exportar CSV</button>
     <button onclick="logout()">Sair</button>
   </div>
