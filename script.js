@@ -8,10 +8,10 @@ let editSelectedDestinos = [];
 
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener("DOMContentLoaded", () => {
-  const path = window.location.pathname;
+  const path = window.location.pathname.toLowerCase();
 
   if (path.includes("registro")) initRegistro();
-  if (path.includes("gestao")) initGestao();
+  if (path.includes("gestao") || path.includes("gestão")) initGestao();
 
   // Carregar destinos
   fetch("destinos.json")
