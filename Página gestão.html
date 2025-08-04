@@ -11,16 +11,16 @@
     <h2>Login - Gestão</h2>
     <p>Digite a senha:</p>
     <form id="formGestao">
-      <input type="password" id="senhaGestao" required />
+      <input type="password" id="senhaGestao" />
       <button type="submit">Entrar</button>
-      <button type="button" id="voltarBtn" class="voltar">Voltar</button>
+      <button type="button" id="btnVoltar" class="voltar">Voltar</button>
     </form>
     <p id="erroLoginGestao" class="erroLogin"></p>
   </div>
 
   <div id="gestaoContainer" style="display: none;">
     <h1>Registros de Clientes</h1>
-    <div class="table-container"> 
+    <div class="table-container">
       <table id="tabelaRegistros">
         <thead>
           <tr>
@@ -33,7 +33,7 @@
             <th>Valor (€)</th>
             <th>Observações</th>
             <th>Data Registo</th>
-            <th>Próx. Contato</th>
+            <th>Próx. Contacto</th>
             <th>Agente</th>
             <th>Destino(s)</th>
             <th>Ações</th>
@@ -42,13 +42,13 @@
         <tbody></tbody>
       </table>
     </div>
-    <button id="exportarBtn">Exportar CSV</button>
-    <button id="logoutBtn">Sair</button>
+    <button id="btnExportar">Exportar CSV</button>
+    <button id="btnSair">Sair</button>
   </div>
 
   <div id="editModal" class="modal">
     <div class="modal-content">
-      <span class="close-button">&times;</span>
+      <span class="close-button" id="closeModalBtn">&times;</span>
       <h2>Editar Registro de Cliente</h2>
       <form id="editForm">
         <input type="hidden" id="editIndex">
@@ -100,10 +100,10 @@
         <input type="date" id="editDataProximoContato" name="dataProximoContato" />
 
         <label for="editNomeAgente">Nome do Agente:</label>
-        <select id="editNomeAgente" name="nomeAgente">
-            <option value="Soaila Maia">Soaila Maia</option>
-            <option value="Telma Pires">Telma Pires</option>
-            <option value="Délcio Costa">Délcio Costa</option>
+        <select id="editNomeAgente" name="NomeAgente">
+          <option value="Soaila Maia">Soaila Maia</option>
+          <option value="Telma Pires">Telma Pires</option>
+          <option value="Délcio Costa">Délcio Costa</option>
         </select>
 
         <label>Destino(s):</label>
@@ -113,9 +113,8 @@
           <div id="editDestinosSelecionados" class="destinos-selecionados"></div>
           <input type="hidden" id="editDestinosHidden" name="destinos" />
         </div>
-
         <button type="submit">Salvar Alterações</button>
-        <button type="button" id="cancelEditBtn">Cancelar</button>
+        <button type="button" id="cancelEdit">Cancelar</button>
       </form>
     </div>
   </div>
