@@ -92,6 +92,7 @@ function verificarLogin(tipo) {
 }
 
 
+
 function mostrarRegistro() {
   document.getElementById("loginContainer").style.display = "none";
   document.getElementById("registroContainer").style.display = "block";

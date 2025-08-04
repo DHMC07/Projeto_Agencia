@@ -3,107 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro de Clientes</title>
-  <link rel="stylesheet" href="style_assis.css" />
+  <title>Gestão de Registros</title>
+  <link rel="stylesheet" href="style_gest.css" />
 </head>
 <body>
-  <div id="loginContainer">
-    <h2>Login - Comercial</h2>
+  <!-- LOGIN -->
+  <div id="loginGestao">
+    <h2>Login - Gestão</h2>
     <p>Digite a senha:</p>
-    <form id="formRegistroLogin">
-      <input type="password" id="senhaRegistro" />
+    <form id="formGestao">
+      <input type="password" id="senhaGestao" placeholder="Senha de Gestão" required />
       <button type="submit">Entrar</button>
       <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
     </form>
-    <p id="erroLoginRegistro" class="erroLogin"></p>
+    <p id="erroLoginGestao" class="erroLogin" style="color:red;"></p>
   </div>
 
-  <div id="registroContainer" style="display: none;">
-    <h1>Registro de Cliente para Viagem</h1>
-    <form id="registroForm">
-      <label for="nomeCliente">Nome do Cliente:</label>
-      <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
-
-      <label>Data de Registro:
-        <input type="date" id="dataRegistro" name="dataRegistro" required />
-      </label>
-
-      <div id="abasViagem">
-        <button type="button" class="tab active" onclick="selectTab(this)">Round trip</button>
-        <button type="button" class="tab" onclick="selectTab(this)">One way</button>
-        <button type="button" class="tab" onclick="selectTab(this)">Multicity</button>
-      </div>
-
-      <label>Destino(s):
-        <div id="destinoWrapper">
-          <input type="text" id="destinoInput" placeholder="Digite um destino..." />
-          <ul id="sugestoes"></ul>
-          <div id="destinosSelecionados"></div>
-          <input type="hidden" id="destinosHidden" name="destinos" />
-        </div>
-      </label>
-
-      <label>Data de Ida:
-        <input type="date" name="dataIda" required />
-      </label>
-
-      <label>Data de Volta:
-        <input type="date" name="dataVolta" required />
-      </label>
-
-      <label>Número de Pessoas:
-        <input type="number" name="pessoas" min="1" required />
-      </label>
-
-      <label>Datas são flexíveis?
-        <select name="flexivel">
-          <option value="Sim">Sim</option>
-          <option value="Não">Não</option>
-        </select>
-      </label>
-
-      <label>Aeroporto preferido:
-        <select name="aeroporto">
-          <option value="Lisboa">Lisboa</option>
-          <option value="Porto">Porto</option>
-          <option value="Faro">Faro</option>
-          <option value="Outro">Outro</option>
-        </select>
-      </label>
-
-      <label>Tipo de Regime:
-        <select name="regime">
-          <option value="Nada incluído">Nada incluído</option>
-          <option value="Pequeno-almoço">Pequeno-almoço</option>
-          <option value="Meia pensão">Meia pensão</option>
-          <option value="Tudo incluído">Tudo incluído</option>
-        </select>
-      </label>
-
-      <label>Valor Máximo (€):
-        <input type="number" name="valor" min="0" required />
-      </label>
-
-      <label>Observações sobre o cliente:
-        <textarea name="observacoes"></textarea>
-      </label>
-
-      <label>Nome do Agente:
-        <select name="NomeAgente">
-          <option value="Soaila Maia">Soaila Maia</option>
-          <option value="Telma Pires">Telma Pires</option>
-          <option value="Délcio Costa">Délcio Costa</option>
-        </select>
-      </label>
-
-      <label>Data para Próximo Contato:
-        <input type="date" id="dataProximoContato" name="dataProximoContato" />
-      </label>
-
-      <button type="submit">Registrar</button>
-      <p id="mensagemSucesso"></p>
-      <button type="button" onclick="logout()">Sair</button>
-    </form>
+  <!-- GESTÃO -->
+  <div id="gestaoContainer" style="display: none;">
+    <h1>Gestão de Registros de Viagem</h1>
+    <button id="btnExportar">Exportar CSV</button>
+    <button id="btnSair">Sair</button>
+    <table id="tabelaRegistros">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Pessoas</th>
+          <th>Período</th>
+          <th>Flexível</th>
+          <th>Aeroporto</th>
+          <th>Regime</th>
+          <th>Valor</th>
+          <th>Observações</th>
+          <th>Registro</th>
+          <th>Próximo Contato</th>
+          <th>Agente</th>
+          <th>Destinos</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script src="script.js"></script>
