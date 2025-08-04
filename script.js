@@ -70,20 +70,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ========== LOGIN ==========
 function verificarLogin(tipo) {
-  const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao"; // CORRIGIDO
+  const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao";
   const senhaCorreta = tipo === "registro" ? senhaRegistro : senhaGestao;
   const sessionKey = tipo === "registro" ? "logadoRegistro" : "logadoGestao";
-  const input = document.getElementById(senhaInputId).value;
+  const input = document.getElementById(senhaInputId);
+  const senhaDigitada = input?.value.trim();
+  const erro = document.getElementById(tipo === "registro" ? "erroLoginRegistro" : "erroLoginGestao");
 
-  if (input === senhaCorreta) {
+  if (senhaDigitada === senhaCorreta) {
     sessionStorage.setItem(sessionKey, "true");
-    tipo === "registro" ? mostrarRegistro() : mostrarGestao();
-    if (tipo === "gestao") carregarRegistros();
+    if (tipo === "registro") {
+      mostrarRegistro();
+    } else {
+      mostrarGestao();
+      carregarRegistros();
+    }
+    if (erro) erro.textContent = "";
   } else {
-    const erro = document.getElementById(tipo === "registro" ? "erroLoginRegistro" : "erroLoginGestao");
-    if (erro) erro.textContent = "Senha incorreta.";
+    if (erro) erro.textContent = "Senha incorreta. Tente novamente.";
   }
 }
+
 
 function mostrarRegistro() {
   document.getElementById("loginContainer").style.display = "none";
@@ -103,10 +110,6 @@ function logout() {
 function voltarInicio() {
   window.location.href = "index.html";
 }
-
-// O RESTANTE DO SCRIPT CONTINUA COMO ESTAVA (sem alterações nas funcionalidades já funcionando corretamente)
-// Por motivos de espaço, mantivemos apenas até a parte corrigida do login. Se quiser o script completo colado, posso dividir em partes também.
-
 
 // ========== AUTOCOMPLETE ==========
 function handleAutocompleteInput(inputEl, sugestoesId, displayId, hiddenId, arr) {
