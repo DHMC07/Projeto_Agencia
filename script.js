@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch("destinos.json")
     .then(res => res.json())
-    .then(data => todosDestinos = data)
+    .then(data => todosDestinos = [...new Set(data)].sort())
     .catch(err => console.error("Erro ao carregar destinos:", err));
 
   if (page.includes("registro.html")) {
@@ -20,11 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarRegistro();
     }
 
-    document.getElementById("formRegistro")?.addEventListener("submit", handleRegistroFormSubmit);
     document.getElementById("formRegistroLogin")?.addEventListener("submit", e => {
       e.preventDefault();
       verificarLogin("registro");
     });
+
+    document.getElementById("registroForm")?.addEventListener("submit", handleRegistroFormSubmit);
 
     const destinoInput = document.getElementById("destinoInput");
     destinoInput?.addEventListener("input", () => {
@@ -51,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnExportar")?.addEventListener("click", exportarCSV);
     document.getElementById("btnSair")?.addEventListener("click", logout);
-    document.getElementById("btnVoltar")?.addEventListener("click", voltarInicio);
     document.getElementById("closeModalBtn")?.addEventListener("click", fecharModal);
     document.getElementById("cancelEdit")?.addEventListener("click", fecharModal);
     document.getElementById("editForm")?.addEventListener("submit", handleEditFormSubmit);

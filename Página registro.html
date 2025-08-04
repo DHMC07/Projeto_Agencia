@@ -10,7 +10,7 @@
   <div id="loginContainer">
     <h2>Login - Comercial</h2>
     <p>Digite a senha:</p>
-    <form id="formRegistro">
+    <form id="formRegistroLogin">
       <input type="password" id="senhaRegistro" />
       <button type="submit">Entrar</button>
       <button type="button" onclick="voltarInicio()" class="voltar">Voltar</button>
@@ -25,17 +25,16 @@
       <input type="text" id="nomeCliente" name="nome" maxlength="50" required />
 
       <label>Data de Registro:
-          <input type="date" id="dataRegistro" name="dataRegistro" required />
+        <input type="date" id="dataRegistro" name="dataRegistro" required />
       </label>
-      
+
       <div id="abasViagem">
         <button type="button" class="tab active" onclick="selectTab(this)">Round trip</button>
         <button type="button" class="tab" onclick="selectTab(this)">One way</button>
         <button type="button" class="tab" onclick="selectTab(this)">Multicity</button>
       </div>
 
-      <label>
-        Destino(s):
+      <label>Destino(s):
         <div id="destinoWrapper">
           <input type="text" id="destinoInput" placeholder="Digite um destino..." />
           <ul id="sugestoes"></ul>
@@ -45,61 +44,65 @@
       </label>
 
       <label>Data de Ida:
-          <input type="date" name="dataIda" required />
-        </label>
-        <label>Data de Volta:
-          <input type="date" name="dataVolta" required />
-        </label>
-
-        <label>Número de Pessoas:
-          <input type="number" name="pessoas" min="1" required />
-        </label>
-    
-        <label>Datas são flexíveis?
-          <select name="flexivel">
-            <option value="Sim">Sim</option>
-            <option value="Não">Não</option>
-          </select>
-        </label>
-        <label>Aeroporto preferido:
-          <select name="aeroporto">
-            <option value="Lisboa">Lisboa</option>
-            <option value="Porto">Porto</option>
-            <option value="Faro">Faro</option>
-            <option value="Outro">Outro</option>
-          </select>
-        </label>
-        <label>Tipo de Regime:
-          <select name="regime">
-            <option value="Nada incluído">Nada incluído</option>
-            <option value="Pequeno-almoço">Pequeno-almoço</option>
-            <option value="Meia pensão">Meia pensão</option>
-            <option value="Tudo incluído">Tudo incluído</option>
-          </select>
-        </label>
-        <label>Valor Máximo (€):
-          <input type="number" name="valor" min="0" required />
-        </label>
-
-        <label>Observações sobre o cliente:
-          <textarea name="observacoes"></textarea>
-        </label>
-        
-        <label>Nome do Agente:
-          <select name="NomeAgente">
-            <option value="Soaila Maia">Soaila Maia</option>
-            <option value="Telma Pires">Telma Pires</option>
-            <option value="Délcio Costa">Délcio Costa</option>
-          </select>
-        </label>
-
-      <label>Data para Próximo Contato:
-          <input type="date" id="dataProximoContato" name="dataProximoContato" />
+        <input type="date" name="dataIda" required />
       </label>
 
-        <button type="submit">Registrar</button>
-        <p id="mensagemSucesso"></p>
-        <button type="button" onclick="logout()">Sair</button>
+      <label>Data de Volta:
+        <input type="date" name="dataVolta" required />
+      </label>
+
+      <label>Número de Pessoas:
+        <input type="number" name="pessoas" min="1" required />
+      </label>
+
+      <label>Datas são flexíveis?
+        <select name="flexivel">
+          <option value="Sim">Sim</option>
+          <option value="Não">Não</option>
+        </select>
+      </label>
+
+      <label>Aeroporto preferido:
+        <select name="aeroporto">
+          <option value="Lisboa">Lisboa</option>
+          <option value="Porto">Porto</option>
+          <option value="Faro">Faro</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </label>
+
+      <label>Tipo de Regime:
+        <select name="regime">
+          <option value="Nada incluído">Nada incluído</option>
+          <option value="Pequeno-almoço">Pequeno-almoço</option>
+          <option value="Meia pensão">Meia pensão</option>
+          <option value="Tudo incluído">Tudo incluído</option>
+        </select>
+      </label>
+
+      <label>Valor Máximo (€):
+        <input type="number" name="valor" min="0" required />
+      </label>
+
+      <label>Observações sobre o cliente:
+        <textarea name="observacoes"></textarea>
+      </label>
+
+      <label>Nome do Agente:
+        <select name="NomeAgente">
+          <option value="Soaila Maia">Soaila Maia</option>
+          <option value="Telma Pires">Telma Pires</option>
+          <option value="Délcio Costa">Délcio Costa</option>
+        </select>
+      </label>
+
+      <label>Data para Próximo Contato:
+        <input type="date" id="dataProximoContato" name="dataProximoContato" />
+      </label>
+
+      <button type="submit">Registrar</button>
+      <p id="mensagemSucesso"></p>
+      <button type="button" onclick="logout()">Sair</button>
     </form>
   </div>
 
