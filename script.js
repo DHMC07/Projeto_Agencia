@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch("destinos.json")
     .then(res => res.json())
-    .then(data => todosDestinos = data)
+    .then(data => todosDestinos = [...new Set(data)].sort())
     .catch(err => console.error("Erro ao carregar destinos:", err));
 
   if (page.includes("registro.html")) {
@@ -20,11 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarRegistro();
     }
 
-    document.getElementById("formRegistro")?.addEventListener("submit", handleRegistroFormSubmit);
     document.getElementById("formRegistroLogin")?.addEventListener("submit", e => {
       e.preventDefault();
       verificarLogin("registro");
     });
+
+    document.getElementById("registroForm")?.addEventListener("submit", handleRegistroFormSubmit);
 
     const destinoInput = document.getElementById("destinoInput");
     destinoInput?.addEventListener("input", () => {
@@ -51,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("btnExportar")?.addEventListener("click", exportarCSV);
     document.getElementById("btnSair")?.addEventListener("click", logout);
-    document.getElementById("btnVoltar")?.addEventListener("click", voltarInicio);
     document.getElementById("closeModalBtn")?.addEventListener("click", fecharModal);
     document.getElementById("cancelEdit")?.addEventListener("click", fecharModal);
     document.getElementById("editForm")?.addEventListener("submit", handleEditFormSubmit);
@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ========== LOGIN ==========
 function verificarLogin(tipo) {
+<<<<<<< HEAD
   // Determinar IDs e valores baseados no tipo de login
   const configuracao = {
     registro: {
@@ -139,8 +140,30 @@ function verificarLogin(tipo) {
     senhaInput.focus();
     
     console.log(`Tentativa de login ${tipo} falhada`);
+=======
+  const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao";
+  const senhaCorreta = tipo === "registro" ? senhaRegistro : senhaGestao;
+  const sessionKey = tipo === "registro" ? "logadoRegistro" : "logadoGestao";
+  const input = document.getElementById(senhaInputId);
+  const senhaDigitada = input?.value.trim();
+  const erro = document.getElementById(tipo === "registro" ? "erroLoginRegistro" : "erroLoginGestao");
+
+  if (senhaDigitada === senhaCorreta) {
+    sessionStorage.setItem(sessionKey, "true");
+    if (tipo === "registro") {
+      mostrarRegistro();
+    } else {
+      mostrarGestao();
+      carregarRegistros();
+    }
+    if (erro) erro.textContent = "";
+  } else {
+    if (erro) erro.textContent = "Senha incorreta. Tente novamente.";
+>>>>>>> 08b62f8faffa992ff885b3e8c3abb0619a39e1e1
   }
 }
+
+
 
 function mostrarRegistro() {
   const loginContainer = document.getElementById("loginContainer");
