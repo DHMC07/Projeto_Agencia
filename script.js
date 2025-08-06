@@ -70,29 +70,112 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ========== LOGIN ==========
 function verificarLogin(tipo) {
-  const senhaInputId = tipo === "registro" ? "senhaRegistro" : "senhaGestao";
-  const senhaCorreta = tipo === "registro" ? senhaRegistro : senhaGestao;
-  const sessionKey = tipo === "registro" ? "logadoRegistro" : "logadoGestao";
-  const input = document.getElementById(senhaInputId).value;
+  // Determinar IDs e valores baseados no tipo de login
+  const configuracao = {
+    registro: {
+      senhaInputId: "senhaRegistro",
+      senhaCorreta: senhaRegistro,
+      sessionKey: "logadoRegistro",
+      erroElementId: "erroLoginRegistro",
+      funcaoMostrar: mostrarRegistro,
+      funcaoAdicional: null
+    },
+    gestao: {
+      senhaInputId: "senhaGestao", 
+      senhaCorreta: senhaGestao,
+      sessionKey: "logadoGestao",
+      erroElementId: "erroLoginGestao",
+      funcaoMostrar: mostrarGestao,
+      funcaoAdicional: carregarRegistros
+    }
+  };
 
-  if (input === senhaCorreta) {
-    sessionStorage.setItem(sessionKey, "true");
-    tipo === "registro" ? mostrarRegistro() : mostrarGestao();
-    if (tipo === "gestao") carregarRegistros();
+  const config = configuracao[tipo];
+  if (!config) {
+    console.error("Tipo de login inválido:", tipo);
+    return;
+  }
+
+  // Obter senha inserida pelo usuário
+  const senhaInput = document.getElementById(config.senhaInputId);
+  if (!senhaInput) {
+    console.error("Campo de senha não encontrado:", config.senhaInputId);
+    return;
+  }
+
+  const senhaInserida = senhaInput.value.trim();
+
+  // Limpar mensagem de erro anterior
+  const elementoErro = document.getElementById(config.erroElementId);
+  if (elementoErro) {
+    elementoErro.textContent = "";
+  }
+
+  // Verificar senha
+  if (senhaInserida === config.senhaCorreta) {
+    // Login bem-sucedido
+    sessionStorage.setItem(config.sessionKey, "true");
+    
+    // Limpar campo de senha
+    senhaInput.value = "";
+    
+    // Mostrar interface apropriada
+    config.funcaoMostrar();
+    
+    // Executar função adicional se existir (ex: carregar registros para gestão)
+    if (config.funcaoAdicional) {
+      config.funcaoAdicional();
+    }
+    
+    console.log(`Login ${tipo} realizado com sucesso`);
   } else {
-    const erro = document.getElementById(tipo === "registro" ? "erroLoginRegistro" : "erroLoginGestao");
-    if (erro) erro.textContent = "Senha incorreta.";
+    // Login falhado
+    if (elementoErro) {
+      elementoErro.textContent = "Senha incorreta. Tente novamente.";
+    }
+    
+    // Limpar campo de senha
+    senhaInput.value = "";
+    senhaInput.focus();
+    
+    console.log(`Tentativa de login ${tipo} falhada`);
   }
 }
 
 function mostrarRegistro() {
-  document.getElementById("loginContainer").style.display = "none";
-  document.getElementById("registroContainer").style.display = "block";
+  const loginContainer = document.getElementById("loginContainer");
+  const registroContainer = document.getElementById("registroContainer");
+  
+  if (loginContainer) loginContainer.style.display = "none";
+  if (registroContainer) registroContainer.style.display = "block";
 }
 
 function mostrarGestao() {
-  document.getElementById("loginGestao").style.display = "none";
-  document.getElementById("gestaoContainer").style.display = "block";
+  const loginGestao = document.getElementById("loginGestao");
+  const gestaoContainer = document.getElementById("gestaoContainer");
+  
+  if (loginGestao) loginGestao.style.display = "none";
+  if (gestaoContainer) gestaoContainer.style.display = "block";
+}
+
+// Função para verificar se usuário já está logado ao carregar a página
+function verificarSessaoExistente() {
+  const page = window.location.pathname;
+  
+  if (page.includes("registro.html")) {
+    if (sessionStorage.getItem("logadoRegistro") === "true") {
+      mostrarRegistro();
+      return true;
+    }
+  } else if (page.includes("gestao.html")) {
+    if (sessionStorage.getItem("logadoGestao") === "true") {
+      mostrarGestao();
+      carregarRegistros();
+      return true;
+    }
+  }
+  
+  return false;
 }
 
 // ========== NAVEGAÇÃO ==========
