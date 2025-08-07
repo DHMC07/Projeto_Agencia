@@ -111,6 +111,11 @@
       function logout() {
           window.location.href = "https://dhmc07.github.io/Projeto_Agencia/index.html";
       }
+      
+      // Adiciona o event listener para o formulário de senha
+      document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("formRegistro").addEventListener("submit", loginRegistro);
+      });
 
       function loginRegistro(event) {
           event.preventDefault();
