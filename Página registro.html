@@ -118,11 +118,10 @@
           if (senha === "comercial1") { // Exemplo de senha
               document.getElementById("loginContainer").style.display = "none";
               document.getElementById("registroContainer").style.display = "block";
+              document.getElementById("formRegistro").addEventListener("submit", loginRegistro);
         } else {
             document.getElementById("erroLoginRegistro").textContent = "Senha incorreta.";
         }
-      document.getElementById("formRegistro").addEventListener("submit", loginRegistro);
-
     }
   </script>
 
